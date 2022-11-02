@@ -1,3 +1,31 @@
+.absolute {
+  position: absolute
+}
+
+.bottom-4 {
+  bottom: 1rem
+}
+
+.left-4 {
+  left: 1rem
+}
+
+.right-4 {
+  right: 1rem
+}
+
+.bottom-6 {
+  bottom: 1.5rem
+}
+
+.left-6 {
+  left: 1.5rem
+}
+
+.right-6 {
+  right: 1.5rem
+}
+
 .ml-auto {
   margin-left: auto
 }
@@ -18,16 +46,8 @@
   height: 3px
 }
 
-.h-8 {
-  height: 2rem
-}
-
 .h-16 {
   height: 4rem
-}
-
-.h-20 {
-  height: 5rem
 }
 
 .w-7 {
@@ -86,8 +106,9 @@
   padding-right: 2.5rem
 }
 
-.pb-8 {
-  padding-bottom: 2rem
+.px-6 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem
 }
 
 .text-lg {

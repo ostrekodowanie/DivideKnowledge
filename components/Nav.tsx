@@ -15,13 +15,17 @@ export default function Nav() {
     const tw = useTailwind();
     return (
         <NavigationContainer>
-            <Tab.Navigator screenOptions={{tabBarStyle: tw('flex items-center flex-row justify-between h-16 px-10'), tabBarItemStyle: {
-                    ...tw('flex items-center flex-col'),
-                }, tabBarLabelStyle: {
-                    fontFamily: 'medium',
-                    fontSize: 12,
-                    color: '#293241'
-                }}}>
+            <Tab.Navigator screenOptions={({ route }) => {
+                return {
+                    tabBarStyle: tw('flex items-center flex-row justify-between h-16 px-6 absolute bottom-6 left-6 right-6 rounded-xl'),
+                    tabBarActiveTintColor: '#293241',
+                    tabBarInActiveTintColor: '#222222',
+                    tabBarLabelStyle: {
+                        fontFamily: 'medium',
+                        fontSize: 12,
+                    }
+                }
+            }}>
                 <Tab.Screen name="Home" component={Home} options={{ title: 'Dom', tabBarIcon: () => {
                     return <Image source={{}} />
                 }, header: () => <Header name={'DivideKnowledge'} /> }} />
