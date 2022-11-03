@@ -5,7 +5,7 @@ export default function Notes() {
     const tw = useTailwind();
     
     return (
-        <SafeAreaView style={tw('flex items-center justify-center h-full')}>
+        <SafeAreaView style={tw('flex items-center justify-center h-full bg-blue-400')}>
         </SafeAreaView>
     )
 }

@@ -3,7 +3,7 @@ import TailwindProvider from 'tailwind-rn/dist/tailwind-provider';
 import utilities from './tailwind.json';
 import Nav from './components/Nav';
 import { useFonts } from 'expo-font'
-import { Text } from 'react-native'
+import 'react-native-gesture-handler';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
