@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('apps.Notes.urls')),
     path('', include('apps.Auth.urls')),
+    path('', include('apps.Flashcards.urls'))
 ]
