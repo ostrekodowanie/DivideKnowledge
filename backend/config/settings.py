@@ -180,6 +180,7 @@ SIMPLE_JWT = {
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:5173',
     'http://localhost:8000',
+    
 )
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
