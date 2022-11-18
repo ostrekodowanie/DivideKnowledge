@@ -27,7 +27,11 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+<<<<<<< HEAD
+ALLOWED_HOSTS = ['127.0.0.1', '192.168.2.106' ,'192.168.1.104']
+=======
 ALLOWED_HOSTS = ['127.0.0.1', '192.168.2.106']
+>>>>>>> d169fc24b86a22d81980091a83440a448135d396
 
 
 # Application definition
@@ -88,6 +92,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
+<<<<<<< HEAD
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+=======
         #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': BASE_DIR / 'db.sqlite3',
 
@@ -97,6 +105,7 @@ DATABASES = {
         'PASSWORD': 'NKfH0VjyuClfcbqzphRh',
         'HOST': 'containers-us-west-129.railway.app',
         'PORT': '5907',
+>>>>>>> d169fc24b86a22d81980091a83440a448135d396
     }
 }
 
@@ -187,7 +196,12 @@ SIMPLE_JWT = {
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:5173',
     'http://localhost:8000',
+<<<<<<< HEAD
+    'http://192.168.2.106:8000',
+    'http://192.168.1.104:8000'
+=======
     'http://192.168.2.106:8000'
+>>>>>>> d169fc24b86a22d81980091a83440a448135d396
 )
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
