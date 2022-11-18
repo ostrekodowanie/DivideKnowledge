@@ -8,7 +8,6 @@ class FlashcardsSerializer(serializers.ModelSerializer):
         fields = '__all__'
 =======
 class AnswersSerializer(serializers.ModelSerializer):
-    #question = serializers.CharField(source='flashcards.question')
     class Meta:
         model = Answers
         fields = ['id', 'content', 'correct']

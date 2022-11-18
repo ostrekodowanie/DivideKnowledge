@@ -1,19 +1,11 @@
 from .models import *
-<<<<<<< HEAD
 from .serializers import *
-=======
-from .serializers import FlashcardsSerializer
->>>>>>> d169fc24b86a22d81980091a83440a448135d396
 
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
-<<<<<<< HEAD
-class FlashcardsListCreateView(generics.ListCreateAPIView):
-=======
 class FlashcardsListView(generics.ListAPIView):
->>>>>>> d169fc24b86a22d81980091a83440a448135d396
-    queryset = Flashcards.objects.all()
+    queryset = Flashcards.objects.all().order_by('?')[:1]
     serializer_class = FlashcardsSerializer
 
 class FlashcardsRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
