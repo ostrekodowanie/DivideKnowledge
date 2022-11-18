@@ -1,10 +1,10 @@
 from .models import *
-from .serializers import *
+from .serializers import FlashcardsSerializer
 
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
-class FlashcardsListCreateView(generics.ListCreateAPIView):
+class FlashcardsListView(generics.ListAPIView):
     queryset = Flashcards.objects.all()
     serializer_class = FlashcardsSerializer
 

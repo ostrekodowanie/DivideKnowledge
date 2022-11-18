@@ -36,6 +36,7 @@ class Notes(models.Model):
         verbose_name_plural = 'Notes'
 
     def __str__(self):
-        return '{}'.format(
+        return '{} - {}'.format(
             self.pk,
+            self.title,
         )
