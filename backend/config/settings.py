@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', '192.168.2.106']
 
 
 # Application definition
@@ -187,7 +187,7 @@ SIMPLE_JWT = {
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:5173',
     'http://localhost:8000',
-    
+    'http://192.168.2.106:8000'
 )
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
