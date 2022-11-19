@@ -1,5 +1,6 @@
 from django.db import models
 from apps.Auth.models import User
+from apps.Flashcards.models import Categories
 
 MATEMATYKA = 'Matematyka'
 BIOLOGIA = 'Biologia'
@@ -28,7 +29,8 @@ class Notes(models.Model):
     title = models.CharField(max_length=255)
     desc = models.CharField(max_length=255)
     image = models.ImageField(upload_to='notes')
-    category = models.CharField(max_length=255, choices=CATEGORIES)
+    category = models.ForeignKey(
+        Categories, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -36,12 +38,7 @@ class Notes(models.Model):
         verbose_name_plural = 'Notes'
 
     def __str__(self):
-<<<<<<< HEAD
-        return '{}'.format(
-            self.pk,
-=======
         return '{} - {}'.format(
             self.pk,
             self.title,
->>>>>>> d169fc24b86a22d81980091a83440a448135d396
         )

@@ -1,17 +1,27 @@
 from django.db import models
 from apps.Auth.models import User
 
+class Categories(models.Model):
+    name = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='categories')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = 'Categories'
+
+    def __str__(self):
+        return '{} - {}'.format(
+            self.pk,
+            self.name,
+        )
+
 class Flashcards(models.Model):
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE) 
+        User, on_delete=models.CASCADE)
+    category = models.ForeignKey(
+        Categories, on_delete=models.CASCADE)
     question = models.CharField(max_length=255)
-<<<<<<< HEAD
-    correct_answer = models.CharField(max_length=255)
-    wrong_answer1 = models.CharField(max_length=255, blank=True, null=True)
-    wrong_answer2 = models.CharField(max_length=255, blank=True, null=True)
-    wrong_answer3 = models.CharField(max_length=255, blank=True, null=True)
-=======
->>>>>>> d169fc24b86a22d81980091a83440a448135d396
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -26,17 +36,9 @@ class Flashcards(models.Model):
         )
 
 class Answers(models.Model):
-<<<<<<< HEAD
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE)
-    flashcard = models.ForeignKey(
-        Flashcards, on_delete=models.CASCADE)
-    answer = models.CharField(max_length=255)
-=======
     flashcard = models.ForeignKey(
         Flashcards, on_delete=models.CASCADE, related_name='answers')
     content = models.CharField(max_length=255)
->>>>>>> d169fc24b86a22d81980091a83440a448135d396
     correct = models.BooleanField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -45,14 +47,8 @@ class Answers(models.Model):
         verbose_name_plural = 'Answers'
 
     def __str__(self):
-<<<<<<< HEAD
-        return '{} - {} - {}'.format(
-            self.pk,
-            self.user,
-=======
         return '{} - {}'.format(
             self.pk,
->>>>>>> d169fc24b86a22d81980091a83440a448135d396
             self.flashcard,
         )
 
