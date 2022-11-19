@@ -3,3 +3,4 @@ from .models import *
 
 admin.site.register(Flashcards)
 admin.site.register(Answers)
+admin.site.register(Categories)

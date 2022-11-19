@@ -1,9 +1,26 @@
 from django.db import models
 from apps.Auth.models import User
 
+class Categories(models.Model):
+    name = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='categories')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = 'Categories'
+
+    def __str__(self):
+        return '{} - {}'.format(
+            self.pk,
+            self.name,
+        )
+
 class Flashcards(models.Model):
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE) 
+        User, on_delete=models.CASCADE)
+    category = models.ForeignKey(
+        Categories, on_delete=models.CASCADE)
     question = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

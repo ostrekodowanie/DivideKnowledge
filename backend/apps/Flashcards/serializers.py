@@ -11,3 +11,8 @@ class FlashcardsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Flashcards
         fields = ['question', 'answers']
+
+class CategoriesListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Categories
+        fields = ['name', 'image']
