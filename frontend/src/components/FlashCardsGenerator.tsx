@@ -2,6 +2,7 @@ import axios from 'axios'
 import { useState, useEffect } from 'react'
 import { BASE_URL } from '../constants/baseUrl'
 import { AnswerContext } from '../context/AnswerProvider'
+import { CategoryProps } from '../screens/FlashCardsScreen'
 import FlashCard, { FlashCardProps } from './FlashCard'
 
 export default function FlashCardsGenerator() {

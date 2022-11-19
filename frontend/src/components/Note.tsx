@@ -1,14 +1,18 @@
+import { RouteProp } from "@react-navigation/native";
 import { Text, View } from "react-native";
+import { NoteStackParams } from "../screens/NotesScreen";
+import { FlashCardProps } from "./FlashCard";
 
 export interface NoteProps {
     title: string,
     desc: string
 }
 
-export default function Note(props: NoteProps) {
+type NoteRouteProp = RouteProp<NoteStackParams, 'Note'>
+
+export default function Note({ route }: { route: NoteRouteProp}) {
     return (
         <View>
-            <Text>{props.title}</Text>
         </View>
     )
 }

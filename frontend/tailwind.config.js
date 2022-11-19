@@ -4,7 +4,11 @@ module.exports = {
     './src/**/*.tsx'
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: '#8A2BE2'
+      }
+    },
   },
   plugins: [],
   corePlugins: require('tailwind-rn/unsupported-core-plugins'),

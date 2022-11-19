@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import axios from 'axios';
 import { useEffect, useState } from 'react'
@@ -41,10 +41,11 @@ const NoteList = () => {
     )
 }
 
+type NoteRefNavigationProp = NavigationProp<NoteStackParams, 'NoteList'>
 
 const NoteRef = (props: NoteProps) => {
     const tw = useTailwind()
-    const navigation = useNavigation()
+    const navigation = useNavigation<NoteRefNavigationProp>()
     return (
         <TouchableOpacity onPress={() => navigation.navigate('Note', {...props})} style={tw('w-full rounded-xl shadow bg-white py-2 px-4')}>
             <Text>{props.title}</Text>
