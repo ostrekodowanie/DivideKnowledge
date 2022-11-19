@@ -1,7 +1,8 @@
 import { Text, View } from "react-native";
 
 export interface NoteProps {
-    title: string
+    title: string,
+    desc: string
 }
 
 export default function Note(props: NoteProps) {

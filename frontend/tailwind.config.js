@@ -1,6 +1,6 @@
 module.exports = {
   content: [
-    './**/*.tsx',
+    './App.tsx',
     './src/**/*.tsx'
   ],
   theme: {

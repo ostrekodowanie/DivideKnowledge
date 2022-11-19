@@ -1,11 +1,8 @@
-import { NavigationProp, useNavigation } from '@react-navigation/native'
+import { NavigationProp } from '@react-navigation/native'
 import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navigation/native-stack'
-import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { TouchableOpacity, Text } from 'react-native'
-import { useTailwind } from 'tailwind-rn/dist'
-import FlashCard, { FlashCardProps } from '../components/FlashCard'
-import FlashCardsGenerator from './FlashCardsGenerator'
+import FlashCardsGenerator from '../components/FlashCardsGenerator'
 
 
 export type CategoryStackParams = {
@@ -20,7 +17,6 @@ export type CategoryStackParams = {
 const CategoryStack = createNativeStackNavigator<CategoryStackParams>()
 
 export default function FlashCardsScreen() {
-    const tw = useTailwind()
     const [categories, setCategories] = useState<CategoryProps[]>([])
 
     useEffect(() => {
