@@ -13,10 +13,6 @@ class FlashcardsListView(generics.ListAPIView):
     queryset = Flashcards.objects.all().order_by('?')[:1]
     serializer_class = FlashcardsSerializer
 
-class FlashcardsRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Flashcards.objects.all()
-    serializer_class = FlashcardsSerializer
-
 class UserFlashcardsView(generics.ListAPIView):
     serializer_class = FlashcardsSerializer
     permission_classes = [IsAuthenticated]
