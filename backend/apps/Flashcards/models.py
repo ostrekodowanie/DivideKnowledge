@@ -16,6 +16,22 @@ class Categories(models.Model):
             self.name,
         )
 
+class Topics(models.Model):
+    category = models.ForeignKey(
+        Categories, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = 'Topics'
+
+    def __str__(self):
+        return '{} - {}'.format(
+            self.pk,
+            self.name,
+        )
+
 INPUT = 'input'
 RADIO = 'radio'
 TYPES = [
@@ -26,8 +42,8 @@ TYPES = [
 class Flashcards(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE)
-    category = models.ForeignKey(
-        Categories, on_delete=models.CASCADE)
+    topic = models.ForeignKey(
+        Topics, on_delete=models.CASCADE)
     type = models.CharField(max_length=255, choices=TYPES)
     question = models.CharField(max_length=255)
     is_verified = models.BooleanField(default=False)
@@ -41,7 +57,7 @@ class Flashcards(models.Model):
         return '{} - {} - {} - {} - {}'.format(
             self.pk,
             self.user,
-            self.category,
+            self.topic,
             self.type,
             self.question,
         )

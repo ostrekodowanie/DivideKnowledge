@@ -21,19 +21,31 @@ class UserFlashcardsView(generics.ListAPIView):
         user = self.kwargs['pk']
         return Flashcards.objects.filter(user=user)
 
-class CategoriesListView(generics.ListAPIView):
-    queryset = Categories.objects.all().annotate(ids=Count('flashcards__id')).order_by('-ids')
-    serializer_class = CategoriesListSerializer
+class FlashcardsCategoriesListView(generics.ListAPIView):
+    queryset = Categories.objects.all().annotate(ids=Count('topics__id')).order_by('-ids')
+    serializer_class = FlashcardsCategoriesListSerializer
 
-class CategoryFilterView(generics.ListAPIView):
+class FlashcardsTopicsListView(generics.ListAPIView):
+    serializer_class = TopicsSerializer
+    def get_queryset(self):
+        c = self.request.GET.get('c')
+        
+        topics = Topics.objects.filter(flashcards__is_verified=True).filter(category__name=c).annotate(ids=Count('flashcards__id')).order_by('-ids')
+        return topics
+        
+
+class RandomFlashcardView(generics.ListAPIView):
     serializer_class = FlashcardsSerializer
     def get_queryset(self):
         c = self.request.GET.get('c')
+        t = self.request.GET.get('t')
+        queries = Q(is_verified=True)
         if c:
-            categories = Flashcards.objects.filter(category__name=c).order_by('?')[:1]
-            return categories
+            queries.add(Q(topic__category__name=c), Q.AND)
+        if t:
+            queries.add(Q(topic__name=t), Q.AND)
 
-        return Flashcards.objects.all()
-
+        return Flashcards.objects.filter(queries).order_by('?')[:1]
+    
     
     

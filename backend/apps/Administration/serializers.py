@@ -10,7 +10,7 @@ class AnswersSerializer(serializers.ModelSerializer):
 class FlashcardsVerifySerializer(serializers.ModelSerializer):
     answers = AnswersSerializer(many=True, read_only=True)
     email = serializers.CharField(source='user.email')
-    category = serializers.CharField(source='category.name')
+    topic = serializers.CharField(source='topic.name')
     class Meta:
         model = Flashcards
-        fields = ['id', 'email', 'category', 'type', 'question','answers', 'created_at']
+        fields = ['id', 'email', 'topic', 'type', 'question','answers', 'created_at']

@@ -12,7 +12,12 @@ class FlashcardsSerializer(serializers.ModelSerializer):
         model = Flashcards
         fields = ['question', 'answers', 'type']
 
-class CategoriesListSerializer(serializers.ModelSerializer):
+class TopicsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Topics
+        fields = ['name']
+
+class FlashcardsCategoriesListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categories
         fields = ['name', 'image']
@@ -25,20 +30,24 @@ class AnswersCreateSerializer(serializers.ModelSerializer):
         fields = ['content', 'correct']
 
 class FlashcardCreateSerializer(serializers.ModelSerializer):
-    answers = AnswersCreateSerializer(many=True,write_only=True)
+    answers = AnswersCreateSerializer(many=True)
     category = serializers.CharField()
     id = serializers.IntegerField()
+    topic = serializers.CharField()
     class Meta:
         model = Flashcards
-        fields = ['id', 'category', 'type', 'question', 'answers']
+        fields = ['id', 'category', 'type', 'question', 'answers', 'topic']
     
     def create(self, validated_data):
         answers_data = validated_data.pop('answers')
         user = validated_data.pop('id')
         category_name = validated_data.pop('category')
+        topic_name = validated_data.pop('topic')
 
-        flashcard = Flashcards.objects.bulk_create(category=Categories.objects.get(name=category_name), user=User.objects.get(id=user), **validated_data)
-        Answers.objects.create(flashcard=flashcard, **answers_data)
+        topic_obj = Topics.objects.get_or_create(category=Categories.objects.get(name=category_name), **topic_name)
+        flashcard = Flashcards.objects.create(topic=topic_obj, user=User.objects.get(id=user), **validated_data)
+        for answer in answers_data:
+            Answers.objects.create(flashcard=flashcard, **answer)
 
         return flashcard
 
