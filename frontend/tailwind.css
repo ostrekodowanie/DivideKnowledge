@@ -57,6 +57,10 @@
   margin-bottom: 2rem
 }
 
+.mt-4 {
+  margin-top: 1rem
+}
+
 .flex {
   display: flex
 }
@@ -103,6 +107,10 @@
 
 .h-20 {
   height: 5rem
+}
+
+.h-\[8rem\] {
+  height: 8rem
 }
 
 .max-h-\[1in\] {

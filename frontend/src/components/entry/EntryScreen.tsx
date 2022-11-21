@@ -1,9 +1,9 @@
 import { Pressable, Text } from "react-native"
-import useMultiStepForm from "../hooks/useMultiStepForm"
-import Info from "./entry/Info"
+import useMultiStepForm from "../../hooks/useMultiStepForm"
+import Info from "./Info"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useTailwind } from "tailwind-rn/dist"
-import Auth from "./entry/Auth"
+import Auth from "./Auth"
 
 export default function EntryScreen() {
     const tw = useTailwind()

@@ -1,7 +1,7 @@
 import { Pressable, SafeAreaView, Text, TextInput, TouchableOpacity } from "react-native";
 import { useState, useEffect, useContext } from 'react'
 import { useTailwind } from "tailwind-rn/dist";
-import { AnswerContext } from "../context/AnswerProvider";
+import { AnswerContext } from "../../context/AnswerProvider";
 
 export interface AnswerType {
     id?: number,
@@ -44,17 +44,25 @@ export default function FlashCard(props: FlashCardProps) {
 
 
 const RadioAnswer = (props: AnswerType) => {
+    const tw = useTailwind()
     const { setAnswer } = useContext(AnswerContext)
-    return <TouchableOpacity onPress={() => setAnswer(props.content)}><Text>{props.content}</Text></TouchableOpacity>
+    return <TouchableOpacity onPress={() => setAnswer(props.content)}><Text style={tw('text-lg')}>{props.content}</Text></TouchableOpacity>
 }
 
 const InputAnswer = () => {
+    const tw = useTailwind()
     const [input, setInput] = useState('')
-    const { setAnswer } = useContext(AnswerContext)
+    const { answer, setAnswer } = useContext(AnswerContext)
+
+    useEffect(() => {
+        if(answer) setInput(answer)
+        else setInput('')
+    }, [answer])
+
     return (
         <>
-            <TextInput placeholder="Odpowiedź" onChangeText={text => setInput(text.toLowerCase())} />
-            <Pressable onPress={() => setAnswer(input)}><Text>Zatwierdź</Text></Pressable>
+            <TextInput style={tw('text-lg my-4')} placeholder="Odpowiedź" value={input} onChangeText={text => setInput(text.toLowerCase())} />
+            <Pressable style={tw('py-3 px-6 bg-blue-400')} onPress={() => setAnswer(input)}><Text style={tw('text-white')}>Zatwierdź</Text></Pressable>
         </>
     )
 }

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useTailwind } from 'tailwind-rn';
 import Loader from '../components/Loader';
-import Note, { NoteProps } from '../components/Note';
+import Note, { NoteProps } from '../components/notes/Note';
 import { BASE_URL } from '../constants/baseUrl';
 
 export type NoteStackParams = {
@@ -18,7 +18,7 @@ const NoteStack = createNativeStackNavigator<NoteStackParams>()
 export default function NotesScreen() {
     return (
         <NoteStack.Navigator initialRouteName='NoteList'>
-            <NoteStack.Screen name='NoteList' component={NoteList} options={{ title: 'Wybierz notatkę' }} />
+            <NoteStack.Screen name='NoteList' component={NoteList} options={{ title: 'Popularne notatki' }} />
             <NoteStack.Screen name='Note' component={Note} options={{ title: 'Notatka' }} />
         </NoteStack.Navigator>
     )

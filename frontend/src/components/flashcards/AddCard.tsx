@@ -2,7 +2,7 @@ import { Pressable, Text, TextInput, View } from "react-native";
 import { useTailwind } from "tailwind-rn/dist";
 import { useEffect, useState } from 'react'
 import axios from "axios";
-import { FlashCardProps } from "../FlashCard";
+import { FlashCardProps } from "./FlashCard";
 import SelectDropdown from "react-native-select-dropdown";
 import { BASE_URL } from "../../constants/baseUrl";
 import { CategoryProps } from "./CategoryList";

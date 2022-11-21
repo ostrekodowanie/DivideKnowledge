@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FlashCardsScreen from './src/screens/FlashCardsScreen';
 import NotesScreen from './src/screens/NotesScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
-import EntryScreen from './src/components/EntryScreen';
+import EntryScreen from './src/components/entry/EntryScreen';
 import { useAppSelector } from './src/hooks/useAppSelector';
 import { useTailwind } from 'tailwind-rn/dist';
 import { FlashCardsIcon, HomeIcon, NotesIcon, ProfileIcon } from './assets/home';
@@ -13,7 +13,9 @@ import jwtDecode from 'jwt-decode'
 import { login, logout } from './reducers/login';
 import { useDispatch } from 'react-redux';
 import Loader from './src/components/Loader';
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import axios from 'axios';
+import { BASE_URL } from './src/constants/baseUrl';
 
 export type RootTabParams = {
   Home: undefined,
@@ -27,8 +29,11 @@ const RootTab = createBottomTabNavigator<RootTabParams>()
 export default function App() {
   const tw = useTailwind()
   const dispatch = useDispatch()
+  const timer = useRef<any>(null)
   const [loading, setLoading] = useState(true)
-  const { logged } = useAppSelector(state => state.login)
+  const auth = useAppSelector(state => state.login)
+  const { logged } = auth
+  const { refresh } = auth.tokens
 
   const getUser = async () => {
     const fromStorage = await AsyncStorage.getItem('user')
@@ -41,12 +46,37 @@ export default function App() {
         tokens
       }))
     }
+    setLoading(false)
     return dispatch(logout())
+  }
+
+  const updateToken = async () => {
+    const response = await axios.post(`${BASE_URL}/api/token/refresh`, refresh, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    if(response.status === 200) {
+      let tokens = response.data
+      let user = jwtDecode(tokens.access)
+      dispatch(login({
+        user,
+        tokens
+      }))
+    } else dispatch(logout())
   }
 
   useEffect(() => {
     getUser()
+    timer.current = setInterval(() => {
+      updateToken()
+    }, 600000)
+    return () => clearInterval(timer.current)
   }, [])
+
+  useEffect(() => {
+
+  }, [logged])
 
   if(loading) return <Loader />
   if(!logged) return <EntryScreen />

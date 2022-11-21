@@ -6,6 +6,7 @@ import { NavigationProp, useNavigation } from '@react-navigation/native'
 import { BASE_URL } from '../../constants/baseUrl'
 import Loader from '../Loader'
 import { CategoryStackParams } from '../../screens/FlashCardsScreen'
+import styles from '../../constants/styles'
 
 type CategoryNavigationProps = NavigationProp<CategoryStackParams, 'CategoryList'>
 
@@ -19,7 +20,7 @@ export default function CategoryList({ navigation }: { navigation: CategoryNavig
     const [categories, setCategories] = useState<CategoryProps[]>([])
 
     useEffect(() => {
-        axios.get(`${BASE_URL}/api/categories`)
+        axios.get(`${BASE_URL}/api/flashcards/categories`)
             .then(res => res.data)
             .then(data => setCategories(data))
             .catch(err => alert(err))
@@ -35,8 +36,8 @@ const Category = (props: CategoryProps) => {
     const navigation = useNavigation<CategoryNavigationProps>()
     const tw = useTailwind()
     return (
-        <TouchableOpacity style={tw('bg-white mb-8 rounded overflow-hidden')} onPress={() => navigation.navigate('FlashCardsGenerator', {...props})}>
-            <Image style={tw('w-full h-16')} source={{
+        <TouchableOpacity style={tw('bg-white mb-8 rounded overflow-hidden')} onPress={() => navigation.navigate('TopicList', { category: props })}>
+            <Image style={styles.image} source={{
                 uri: props.image
             }} />
             <Text style={tw('my-2 ml-4 font-medium text-xl')}>{props.name}</Text>
