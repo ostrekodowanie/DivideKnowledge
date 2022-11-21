@@ -4,7 +4,7 @@ import { useTailwind } from "tailwind-rn/dist";
 import { AnswerContext } from "../context/AnswerProvider";
 
 export interface AnswerType {
-    id: number,
+    id?: number,
     content: string,
     correct: boolean,
 }

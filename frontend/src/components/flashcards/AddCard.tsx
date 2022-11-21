@@ -34,12 +34,12 @@ export default function AddCard() {
 
     const handleAdd = () => {
         setStatus('loading')
-        if(Object.values(newCard).every(prop => !prop)) return setStatus('Nie wprowadzono wszystkich informacji')
         let postedCard = {
             id,
             ...newCard
         }
-        axios.post('/api/flashcards', JSON.stringify(postedCard), {
+        console.log(postedCard)
+        axios.post(`${BASE_URL}/api/flashcards/create`, JSON.stringify(postedCard), {
             headers: { 'Content-Type': 'application/json' }
         }).then(() => setStatus('Wysłano do weryfikacji'))
         .catch(err => setStatus(err))
@@ -64,9 +64,9 @@ export default function AddCard() {
                 rowTextForSelection={text => text}
             />
             <TextInput style={tw('text-lg mb-4')} placeholder="Pytanie" onChangeText={text => setNewCard(prev => ({ ...prev, question: text}))} />
-            <TextInput placeholder="Odpowiedź" style={tw('text-lg')} />
+            <TextInput placeholder="Odpowiedź" style={tw('text-lg')} onChangeText={text => setNewCard(prev => ({ ...prev, answers: [{ content: text, correct: true }]}))} />
             <Pressable style={tw('bg-primary py-3 px-6 mt-8')} onPress={handleAdd}><Text style={tw('text-white rounded font-medium')}>Dodaj</Text></Pressable>
-            {status === 'loading' ? <Loader /> : status && <Text>{status}</Text>}
+            {status === 'loading' && <Loader />}
         </View>
     )
 }

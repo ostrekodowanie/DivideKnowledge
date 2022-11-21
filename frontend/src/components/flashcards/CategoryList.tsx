@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { TouchableOpacity, Text, Image, View, Pressable } from 'react-native'
+import { TouchableOpacity, Text, Image, Pressable, ScrollView } from 'react-native'
 import { useTailwind } from 'tailwind-rn/dist'
 import axios from 'axios'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
@@ -25,17 +25,17 @@ export default function CategoryList({ navigation }: { navigation: CategoryNavig
             .catch(err => alert(err))
     }, [])
 
-    return <View style={tw('p-4')}>
+    return <ScrollView style={tw('p-4')}>
         <Pressable onPress={() => navigation.navigate('AddCard')}><Text style={tw('text-blue-400 font-medium mb-4 text-[1rem]')}>Dodaj fiszkę</Text></Pressable>
         {categories.length > 0 ? categories.map(category => <Category {...category} key={category.name} />): <Loader />}
-    </View>
+    </ScrollView>
 }
 
 const Category = (props: CategoryProps) => {
     const navigation = useNavigation<CategoryNavigationProps>()
     const tw = useTailwind()
     return (
-        <TouchableOpacity style={tw('bg-white rounded overflow-hidden')} onPress={() => navigation.navigate('FlashCardsGenerator', {...props})}>
+        <TouchableOpacity style={tw('bg-white mb-8 rounded overflow-hidden')} onPress={() => navigation.navigate('FlashCardsGenerator', {...props})}>
             <Image style={tw('w-full h-16')} source={{
                 uri: props.image
             }} />

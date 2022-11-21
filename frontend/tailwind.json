@@ -66,6 +66,11 @@
 			"marginTop": 32
 		}
 	},
+	"mb-8": {
+		"style": {
+			"marginBottom": 32
+		}
+	},
 	"flex": {
 		"style": {
 			"display": "flex"
