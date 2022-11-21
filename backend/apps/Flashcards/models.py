@@ -19,7 +19,7 @@ class Categories(models.Model):
 class Topics(models.Model):
     category = models.ForeignKey(
         Categories, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, db_collation='und-x-icu')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

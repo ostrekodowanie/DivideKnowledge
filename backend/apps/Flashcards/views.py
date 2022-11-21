@@ -13,12 +13,11 @@ class FlashcardCreateView(generics.CreateAPIView):
     serializer_class = FlashcardCreateSerializer
     queryset = Flashcards.objects.all()
 
-class FlashcardsTopicsSearch(generics.ListAPIView):
-    serializer_class = TopicsSerializer
-    def get_queryset(self):
+class FlashcardsTopicsSearchView(APIView):
+    def get(self, request):
         c = self.request.GET.get('c')
         t = self.request.GET.get('t')
-        queries = Q(is_verified=True)
+        queries = Q(flashcards__is_verified=True)
         if c:
             queries.add(Q(category__name=c), Q.AND)
         if t:
@@ -26,8 +25,12 @@ class FlashcardsTopicsSearch(generics.ListAPIView):
             for x in t.split():
                 query &= Q(name__icontains=x)
             queries.add(Q(query), Q.AND)
+        topics = Topics.objects.filter(queries).order_by('name').distinct('name')
+        topics_list = []
+        for x in topics:
+            topics_list.append(x.name)
 
-        return Topics.objects.filter(queries)
+        return Response(topics_list)
 
 
 class UserFlashcardsView(generics.ListAPIView):
