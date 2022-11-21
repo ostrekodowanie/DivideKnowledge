@@ -23,5 +23,6 @@ urlpatterns = [
     path('', include('apps.Notes.urls')),
     path('', include('apps.Auth.urls')),
     path('', include('apps.Flashcards.urls')),
+    path('', include('apps.Administration.urls')),
     re_path('images/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
 ]

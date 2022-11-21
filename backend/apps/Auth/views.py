@@ -25,6 +25,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         
         token['username'] = user.username
         token['email'] = user.email
+        token['plan'] = user.plan
+        token['is_staff'] = user.is_staff
 
         if user.is_verified == False:
             raise AuthenticationFailed('Activate your account')
@@ -58,9 +60,9 @@ class VerifyView(APIView):
     def post(self, request):
         email = request.data['email']
         code = request.data['code']
+
         user = User.objects.get(email=email)
         verification = Verification.objects.get(user=user)
-
         if not user.is_verified:
             if not verification.code == code:
                 return Response({'Invalid code'}, status=status.HTTP_400_BAD_REQUEST)
@@ -79,7 +81,14 @@ class VerifyView(APIView):
         return Response({'Already verified'}, status=status.HTTP_400_BAD_REQUEST)
 
 class LogoutView(APIView):
-    pass
+    def post(self, request):
+        try:
+            refresh_token = request.data
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            return Response(status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class UserView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User
