@@ -12,16 +12,15 @@ class FlashcardsSerializer(serializers.ModelSerializer):
         model = Flashcards
         fields = ['question', 'answers', 'type']
 
-class TopicsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Topics
-        fields = ['name']
-
 class FlashcardsCategoriesListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categories
         fields = ['name', 'image']
 
+class TopicsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Topics
+        fields = ['name']
 
 #Create Flashcard
 class AnswersCreateSerializer(serializers.ModelSerializer):

@@ -7,4 +7,5 @@ urlpatterns = [
     path('api/flashcards/categories', views.FlashcardsCategoriesListView.as_view()),
     path('api/flashcards/topics', views.FlashcardsTopicsListView.as_view()),
     path('api/flashcards/filter', views.RandomFlashcardView.as_view()),
+    path('api/flashcards/topics/search', views.RandomFlashcardView.as_view()),
 ]
