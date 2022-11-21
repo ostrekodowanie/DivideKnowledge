@@ -16,12 +16,21 @@ class Categories(models.Model):
             self.name,
         )
 
+INPUT = 'input'
+RADIO = 'radio'
+TYPES = [
+    (INPUT, 'input'),
+    (RADIO, 'radio'),
+]
+
 class Flashcards(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE)
     category = models.ForeignKey(
         Categories, on_delete=models.CASCADE)
+    type = models.CharField(max_length=255, choices=TYPES)
     question = models.CharField(max_length=255)
+    is_verified = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -29,9 +38,11 @@ class Flashcards(models.Model):
         verbose_name_plural = 'Flashcards'
 
     def __str__(self):
-        return '{} - {} - {}'.format(
+        return '{} - {} - {} - {} - {}'.format(
             self.pk,
             self.user,
+            self.category,
+            self.type,
             self.question,
         )
 

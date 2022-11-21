@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'apps.Auth',
     'apps.Notes',
     'apps.Flashcards',
+    'apps.Administration',
 ]
 
 MIDDLEWARE = [
