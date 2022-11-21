@@ -7,11 +7,11 @@ export interface AnswerType {
     id: number,
     content: string,
     correct: boolean,
-    setAnswer?: any
 }
 
 export interface FlashCardProps {
     question: string,
+    type: 'radio' | 'input',
     answers: AnswerType[]
 }
 
@@ -21,19 +21,21 @@ export default function FlashCard(props: FlashCardProps) {
     const { answer } = useContext(AnswerContext)
 
     useEffect(() => {
+        if(!answer) return
         let correct = props.answers.find(ans => ans.correct)
         if(correct?.content === answer) setStatus('correct')
         else setStatus('wrong')
     }, [answer])
 
     return (
-        <SafeAreaView>
-            <Text style={tw('font-bold text-3xl')}>{props.question}</Text>
+        <SafeAreaView style={tw('flex-1 items-center justify-center')}>
+            <Text style={tw('font-bold text-3xl text-center')}>{props.question}</Text>
             {props.answers && props.answers.map(answer => <Answer {...answer} key={answer.id} />)}
             {status && <Text style={status === 'correct' ? tw('text-green-400') : tw('text-red-400')}>{status}</Text>}
         </SafeAreaView>
     )
 }
+
 
 const Answer = (props: AnswerType) => {
     const { setAnswer } = useContext(AnswerContext)

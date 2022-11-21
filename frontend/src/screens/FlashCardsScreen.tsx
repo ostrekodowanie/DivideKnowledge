@@ -1,9 +1,12 @@
-import { NavigationProp } from '@react-navigation/native'
-import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navigation/native-stack'
+import { NavigationProp, useNavigation } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { TouchableOpacity, Text, Image } from 'react-native'
+import { TouchableOpacity, Text, Image, View } from 'react-native'
+import { useTailwind } from 'tailwind-rn/dist'
 import FlashCardsGenerator from '../components/FlashCardsGenerator'
+import Loader from '../components/Loader'
+import { BASE_URL } from '../constants/baseUrl'
 
 export interface CategoryProps {
     name: string,
@@ -11,51 +14,45 @@ export interface CategoryProps {
 }
 
 export type CategoryStackParams = {
-    CategoryList: {
-        categories: CategoryProps[];
-    };
-    FlashCardsGenerator: {
-        category: CategoryProps
-    };
+    CategoryList: undefined,
+    FlashCardsGenerator: CategoryProps
 }
 
 const CategoryStack = createNativeStackNavigator<CategoryStackParams>()
 
 export default function FlashCardsScreen() {
-    const [categories, setCategories] = useState<CategoryProps[]>([])
-
-    useEffect(() => {
-        axios.get('http://192.168.1.104:8000/api/categories')
-            .then(res => res.data)
-            .then(data => setCategories(data))
-            .catch(err => alert(err))
-    }, [])
-        
     return (
         <CategoryStack.Navigator initialRouteName='CategoryList' screenOptions={{ headerBackButtonMenuEnabled: true, headerBackTitle: 'Cofnij' }}>
-            <CategoryStack.Screen name='CategoryList' component={CategoryList} initialParams={{ categories }} />
-            <CategoryStack.Screen name='FlashCardsGenerator' component={FlashCardsGenerator} />
+            <CategoryStack.Screen name='CategoryList' component={CategoryList} options={{ title: 'Wybierz kategorię' }} />
+            <CategoryStack.Screen name='FlashCardsGenerator' component={FlashCardsGenerator} options={{ title: 'Fiszki'}} />
         </CategoryStack.Navigator>
     )
 }
 
-type Props = NativeStackScreenProps<CategoryStackParams, 'CategoryList'>
+const CategoryList = () => {
+    const [categories, setCategories] = useState<CategoryProps[]>([])
 
-const CategoryList = ({ route, navigation }: Props) => {
-    return (
-        <>
-            <Text>Wybierz kategorię</Text>
-            {route.params.categories.map(category => <Category {...category} navigation={navigation} key={category.name} />)}
-        </>
-    )
+    useEffect(() => {
+        axios.get(`${BASE_URL}/api/categories`)
+            .then(res => res.data)
+            .then(data => setCategories(data))
+            .catch(err => alert(err))
+    }, [])
+
+    if(categories.length === 0) return <Loader />
+    return <View>
+        {categories.map(category => <Category {...category} key={category.name} />)}
+    </View>
 }
 
-type CategoryRefProps = CategoryProps & { navigation: NavigationProp<any, any> }
+type CategoryNavigationProps = NavigationProp<CategoryStackParams, 'CategoryList'>
 
-const Category = (props: CategoryRefProps) => {
+const Category = (props: CategoryProps) => {
+    const navigation = useNavigation<CategoryNavigationProps>()
+    const tw = useTailwind()
     return (
-        <TouchableOpacity onPress={() => props.navigation.navigate('FlashCardsGenerator', { category: props.name })}>
-            <Image source={{
+        <TouchableOpacity onPress={() => navigation.navigate('FlashCardsGenerator', {...props})}>
+            <Image style={tw('w-full h-6')} source={{
                 uri: props.image
             }} />
             <Text>{props.name}</Text>

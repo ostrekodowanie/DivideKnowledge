@@ -2,8 +2,9 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import axios from 'axios';
 import { useEffect, useState } from 'react'
-import { SafeAreaView, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useTailwind } from 'tailwind-rn';
+import Loader from '../components/Loader';
 import Note, { NoteProps } from '../components/Note';
 import { BASE_URL } from '../constants/baseUrl';
 
@@ -17,8 +18,8 @@ const NoteStack = createNativeStackNavigator<NoteStackParams>()
 export default function NotesScreen() {
     return (
         <NoteStack.Navigator initialRouteName='NoteList'>
-            <NoteStack.Screen name='NoteList' component={NoteList} />
-            <NoteStack.Screen name='Note' component={Note} />
+            <NoteStack.Screen name='NoteList' component={NoteList} options={{ title: 'Wybierz notatkę' }} />
+            <NoteStack.Screen name='Note' component={Note} options={{ title: 'Notatka' }} />
         </NoteStack.Navigator>
     )
 }
@@ -33,11 +34,12 @@ const NoteList = () => {
             .then(data => setNotes(data))
     }, [])
 
+    if(notes.length === 0) return <Loader />
+
     return (
-        <SafeAreaView>
-            <Text style={tw('mb-8 font-bold text-4xl')}>Notatki</Text>
+        <ScrollView style={tw('p-4')}>
             {notes.map(note => <NoteRef {...note} key={note.title} />)}
-        </SafeAreaView>
+        </ScrollView>
     )
 }
 
@@ -47,7 +49,7 @@ const NoteRef = (props: NoteProps) => {
     const tw = useTailwind()
     const navigation = useNavigation<NoteRefNavigationProp>()
     return (
-        <TouchableOpacity onPress={() => navigation.navigate('Note', {...props})} style={tw('w-full rounded-xl shadow bg-white py-2 px-4')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Note', {...props})} style={tw('w-full rounded-xl bg-white py-2 px-4 mb-4')}>
             <Text>{props.title}</Text>
             <Text>{props.desc}</Text>
         </TouchableOpacity>
