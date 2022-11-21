@@ -10,7 +10,7 @@ class FlashcardsSerializer(serializers.ModelSerializer):
     answers = AnswersSerializer(many=True, read_only=True)
     class Meta:
         model = Flashcards
-        fields = ['question', 'answers']
+        fields = ['question', 'answers', 'type']
 
 class CategoriesListSerializer(serializers.ModelSerializer):
     class Meta:
