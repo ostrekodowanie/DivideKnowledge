@@ -27,12 +27,30 @@
   margin-bottom: 1.25rem
 }
 
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem
+}
+
+.mx-4 {
+  margin-left: 1rem;
+  margin-right: 1rem
+}
+
 .mb-4 {
   margin-bottom: 1rem
 }
 
 .mb-2 {
   margin-bottom: 0.5rem
+}
+
+.ml-4 {
+  margin-left: 1rem
+}
+
+.mt-8 {
+  margin-top: 2rem
 }
 
 .flex {
@@ -119,6 +137,10 @@
   justify-content: space-between
 }
 
+.overflow-hidden {
+  overflow: hidden
+}
+
 .rounded {
   border-radius: 0.25rem
 }
@@ -140,6 +162,11 @@
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity))
+}
+
+.bg-primary {
+  --tw-bg-opacity: 1;
+  background-color: rgb(138 43 226 / var(--tw-bg-opacity))
 }
 
 .p-4 {
@@ -244,6 +271,11 @@
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem
+}
+
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem
 }
 
 .font-semibold {

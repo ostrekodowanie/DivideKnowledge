@@ -32,23 +32,20 @@ export default function App() {
 
   const getUser = async () => {
     const fromStorage = await AsyncStorage.getItem('user')
-    
-    if(fromStorage) {
-      let tokens = JSON.parse(fromStorage)
+    let tokens = fromStorage && JSON.parse(fromStorage)
+    if(tokens) {
       let user = jwtDecode(tokens.access)
-      return {
+      setLoading(false)
+      return dispatch(login({
         user,
         tokens
-      }
+      }))
     }
-    return null
+    return dispatch(logout())
   }
 
   useEffect(() => {
-    const user = getUser()
-    if(user) dispatch(login(user))
-    if(!user) dispatch(logout())
-    setLoading(false)
+    getUser()
   }, [])
 
   if(loading) return <Loader />
@@ -77,6 +74,7 @@ export default function App() {
           }} />
           <RootTab.Screen name='Profile' component={ProfileScreen} options={{
             title: 'Profil',
+            headerShown: false,
             tabBarIcon: ({ focused }) => <ProfileIcon fill={focused ? '#8A2BE2' : '#3A234E'} height={22} width={20} />
           }} />
         </RootTab.Navigator>
