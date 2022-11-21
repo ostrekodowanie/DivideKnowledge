@@ -37,7 +37,7 @@ class FlashcardCreateSerializer(serializers.ModelSerializer):
         user_id = validated_data.pop('id')
         category_name = validated_data.pop('category')
 
-        flashcard = Flashcards.objects.create(category=Categories.objects.get(name=category_name),user=User.objects.get(id=user_id), **validated_data)
+        flashcard = Flashcards.objects.bulk_create(category=Categories.objects.get(name=category_name), user=User.objects.get(id=user_id), **validated_data)
         Answers.objects.create(flashcard=flashcard, **answers_data)
 
         return flashcard
