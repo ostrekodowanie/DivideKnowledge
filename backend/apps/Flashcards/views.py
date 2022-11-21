@@ -22,7 +22,7 @@ class UserFlashcardsView(generics.ListAPIView):
         return Flashcards.objects.filter(user=user)
 
 class CategoriesListView(generics.ListAPIView):
-    queryset = Categories.objects.filter(flashcards__is_verified=True).annotate(ids=Count('flashcards__id')).order_by('-ids')
+    queryset = Categories.objects.all().annotate(ids=Count('flashcards__id')).order_by('-ids')
     serializer_class = CategoriesListSerializer
 
 class CategoryFilterView(generics.ListAPIView):
@@ -30,7 +30,7 @@ class CategoryFilterView(generics.ListAPIView):
     def get_queryset(self):
         c = self.request.GET.get('c')
         if c:
-            categories = Flashcards.objects.filter(is_verified=True).filter(category__name=c).order_by('?')[:1]
+            categories = Flashcards.objects.filter(category__name=c).order_by('?')[:1]
             return categories
 
         return Flashcards.objects.all()
