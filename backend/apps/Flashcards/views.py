@@ -9,9 +9,9 @@ from rest_framework.response import Response
 from django.db.models import Count
 from django.db.models import Q
 
-class FlashcardsListView(generics.ListAPIView):
-    queryset = Flashcards.objects.all().order_by('?')[:1]
-    serializer_class = FlashcardsSerializer
+class FlashcardCreateView(generics.CreateAPIView):
+    serializer_class = FlashcardCreateSerializer
+    queryset = Flashcards.objects.all()
 
 class UserFlashcardsView(generics.ListAPIView):
     serializer_class = FlashcardsSerializer
