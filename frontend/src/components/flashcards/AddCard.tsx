@@ -26,7 +26,7 @@ export default function AddCard() {
     })
 
     useEffect(() => {
-        axios.get(`${BASE_URL}/api/categories`)
+        axios.get(`${BASE_URL}/api/flashcards/categories`)
             .then(res => res.data)
             .then(data => setCategories(data))
             .catch(err => alert(err))
@@ -38,7 +38,6 @@ export default function AddCard() {
             id,
             ...newCard
         }
-        console.log(postedCard)
         axios.post(`${BASE_URL}/api/flashcards/create`, JSON.stringify(postedCard), {
             headers: { 'Content-Type': 'application/json' }
         }).then(() => setStatus('Wysłano do weryfikacji'))

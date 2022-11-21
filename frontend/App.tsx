@@ -39,44 +39,46 @@ export default function App() {
     const fromStorage = await AsyncStorage.getItem('user')
     let tokens = fromStorage && JSON.parse(fromStorage)
     if(tokens) {
-      let user = jwtDecode(tokens.access)
-      setLoading(false)
-      return dispatch(login({
-        user,
-        tokens
-      }))
+      await updateToken(tokens.refresh)
+      return setLoading(false)
     }
     setLoading(false)
     return dispatch(logout())
   }
 
-  const updateToken = async () => {
-    const response = await axios.post(`${BASE_URL}/api/token/refresh`, refresh, {
-      headers: {
-        'Content-Type': 'application/json'
+  const updateToken = async (token: string) => {
+    try {
+      const response = await axios.post(`${BASE_URL}/api/token/refresh`, JSON.stringify({ refresh: token }), {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      if(response.status === 200) {
+        let tokens = response.data
+        let user = jwtDecode(tokens.access)
+        await AsyncStorage.setItem('user', JSON.stringify(tokens))
+        dispatch(login({
+          user,
+          tokens
+        }))
       }
-    })
-    if(response.status === 200) {
-      let tokens = response.data
-      let user = jwtDecode(tokens.access)
-      dispatch(login({
-        user,
-        tokens
-      }))
-    } else dispatch(logout())
+    } catch(err) {
+      await AsyncStorage.removeItem('user')
+      dispatch(logout())
+    }
   }
 
   useEffect(() => {
     getUser()
-    timer.current = setInterval(() => {
-      updateToken()
-    }, 600000)
-    return () => clearInterval(timer.current)
   }, [])
 
   useEffect(() => {
-
-  }, [logged])
+    if(!logged) return
+    timer.current = setTimeout(() => {
+      updateToken(refresh)
+    }, 600000)
+    return () => clearTimeout(timer.current)
+  }, [refresh])
 
   if(loading) return <Loader />
   if(!logged) return <EntryScreen />

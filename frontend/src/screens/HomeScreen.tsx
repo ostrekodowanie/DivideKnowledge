@@ -1,7 +1,7 @@
 import { SafeAreaView, Text } from "react-native";
 import { useTailwind } from "tailwind-rn/dist";
 
-export default function Home() {
+export default function HomeScreen() {
     const tw = useTailwind()
     return (
         <SafeAreaView>
