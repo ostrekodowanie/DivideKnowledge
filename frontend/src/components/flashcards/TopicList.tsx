@@ -46,7 +46,7 @@ const Topic = (props: TopicRefProps) => {
 
     return (
         <TouchableOpacity style={tw('bg-white mb-8 rounded overflow-hidden')} onPress={() => navigation.navigate('FlashCardsGenerator', {topic: props, category })}>
-            <Image style={styles.image} source={{
+            <Image style={styles.imageCover} source={{
                 uri: props.image
             }} />
             <Text style={tw('my-2 ml-4 font-medium text-xl')}>{props.name}</Text>

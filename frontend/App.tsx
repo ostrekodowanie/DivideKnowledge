@@ -16,6 +16,14 @@ import Loader from './src/components/Loader';
 import { useState, useEffect, useRef } from 'react'
 import axios from 'axios';
 import { BASE_URL } from './src/constants/baseUrl';
+import { useFonts, 
+        Dosis_400Regular as Regular,
+        Dosis_500Medium as Medium, 
+        Dosis_600SemiBold as SemiBold, 
+        Dosis_700Bold as Bold,
+        Dosis_800ExtraBold as ExtraBold
+} from '@expo-google-fonts/dosis';
+import { View } from 'react-native';
 
 export type RootTabParams = {
   Home: undefined,
@@ -31,6 +39,13 @@ export default function App() {
   const dispatch = useDispatch()
   const timer = useRef<any>(null)
   const [loading, setLoading] = useState(true)
+  const [isFontLoaded] = useFonts({
+    Regular,
+    Medium,
+    SemiBold,
+    Bold,
+    ExtraBold
+  })
   const auth = useAppSelector(state => state.login)
   const { logged } = auth
   const { refresh } = auth.tokens
@@ -80,36 +95,37 @@ export default function App() {
     return () => clearTimeout(timer.current)
   }, [refresh])
 
-  if(loading) return <Loader />
+  if(loading || !isFontLoaded) return <Loader />
   if(!logged) return <EntryScreen />
+
   return (
-      <NavigationContainer>
-        <RootTab.Navigator screenOptions={{ 
-          tabBarActiveTintColor: '#8A2BE2', 
-          tabBarInactiveTintColor: '#3A234E', 
-          tabBarLabelStyle: tw('font-semibold text-[0.8rem]'),
-          tabBarStyle: tw('h-20 px-4 py-[0.9rem]')
-        }}>
-          <RootTab.Screen name='Home' component={HomeScreen} options={{
-            title: 'Eksploruj',
-            tabBarIcon: ({ focused }) => <HomeIcon fill={focused ? '#8A2BE2' : '#3A234E'} height={25} width={21} />
-          }} />
-          <RootTab.Screen name='FlashCards' component={FlashCardsScreen} options={{
-            title: 'Fiszki',
-            headerShown: false,
-            tabBarIcon: ({ focused }) => <FlashCardsIcon fill={focused ? '#8A2BE2' : '#3A234E'} height={22} width={20} />
-          }} />
-          <RootTab.Screen name='Notes' component={NotesScreen} options={{
-            title: 'Notatki',
-            headerShown: false,
-            tabBarIcon: ({ focused }) => <NotesIcon fill={focused ? '#8A2BE2' : '#3A234E'} height={22} width={20} />
-          }} />
-          <RootTab.Screen name='Profile' component={ProfileScreen} options={{
-            title: 'Profil',
-            headerShown: false,
-            tabBarIcon: ({ focused }) => <ProfileIcon fill={focused ? '#8A2BE2' : '#3A234E'} height={22} width={20} />
-          }} />
-        </RootTab.Navigator>
-      </NavigationContainer>
+    <NavigationContainer>
+      <RootTab.Navigator screenOptions={{ 
+        tabBarActiveTintColor: '#10DC49', 
+        tabBarInactiveTintColor: '#3A234E', 
+        tabBarLabelStyle: tw('font-semibold text-[0.8rem]'),
+        tabBarStyle: tw('h-20 px-4 py-[0.9rem]')
+      }}>
+        <RootTab.Screen name='Home' component={HomeScreen} options={{
+          title: 'Eksploruj',
+          tabBarIcon: ({ focused }) => <HomeIcon fill={focused ? '#10DC49' : '#3A234E'} height={25} width={21} />
+        }} />
+        <RootTab.Screen name='FlashCards' component={FlashCardsScreen} options={{
+          title: 'Fiszki',
+          headerShown: false,
+          tabBarIcon: ({ focused }) => <FlashCardsIcon fill={focused ? '#10DC49' : '#3A234E'} height={22} width={20} />
+        }} />
+        <RootTab.Screen name='Notes' component={NotesScreen} options={{
+          title: 'Notatki',
+          headerShown: false,
+          tabBarIcon: ({ focused }) => <NotesIcon fill={focused ? '#10DC49' : '#3A234E'} height={22} width={20} />
+        }} />
+        <RootTab.Screen name='Profile' component={ProfileScreen} options={{
+          title: 'Profil',
+          headerShown: false,
+          tabBarIcon: ({ focused }) => <ProfileIcon fill={focused ? '#10DC49' : '#3A234E'} height={22} width={20} />
+        }} />
+      </RootTab.Navigator>
+    </NavigationContainer>
   );
 }

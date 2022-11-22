@@ -37,7 +37,7 @@ const Category = (props: CategoryProps) => {
     const tw = useTailwind()
     return (
         <TouchableOpacity style={tw('bg-white mb-8 rounded overflow-hidden')} onPress={() => navigation.navigate('TopicList', { category: props })}>
-            <Image style={styles.image} source={{
+            <Image style={styles.imageCover} source={{
                 uri: props.image
             }} />
             <Text style={tw('my-2 ml-4 font-medium text-xl')}>{props.name}</Text>
