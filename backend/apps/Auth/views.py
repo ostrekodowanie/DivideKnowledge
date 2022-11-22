@@ -49,8 +49,8 @@ class SignUpView(generics.GenericAPIView):
         
         fixed_digits = 6 
         code = random.randrange(111111, 999999, fixed_digits)
-        email_body = 'Hi ' + user.username + '\nVerification code: ' + str(code)
-        data = {'email_body': email_body, 'to_email': user.email, 'email_subject': 'Activate your account'}
+        email_body = 'Witaj ' + user.username + '\nKod: ' + str(code)
+        data = {'email_body': email_body, 'to_email': user.email, 'email_subject': 'Kod weryfikacyjny'}
         Util.send_email(data)
 
         Verification.objects.create(user=user, code=code)

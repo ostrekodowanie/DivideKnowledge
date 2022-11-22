@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'apps.Notes',
     'apps.Flashcards',
     'apps.Administration',
+    'apps.Flashlists',
 ]
 
 MIDDLEWARE = [

@@ -42,13 +42,14 @@ class FlashcardCreateSerializer(serializers.ModelSerializer):
         user = validated_data.pop('id')
         category_name = validated_data.pop('category')
         topic_name = validated_data.pop('topic')
-
-        topic_obj = Topics.objects.get_or_create(category=Categories.objects.get(name=category_name), **topic_name)
-        flashcard = Flashcards.objects.create(topic=topic_obj, user=User.objects.get(id=user), **validated_data)
+        
+        topic_obj, _ = Topics.objects.get_or_create(category=Categories.objects.get(name=category_name), name=topic_name)
+        flashcard_obj = Flashcards.objects.create(topic=topic_obj, user=User.objects.get(id=user), **validated_data)
         for answer in answers_data:
-            Answers.objects.create(flashcard=flashcard, **answer)
-
-        return flashcard
+            Answers.objects.create(flashcard=flashcard_obj, **answer)
+        print(flashcard_obj)
+        
+        return flashcard_obj
 
 
 

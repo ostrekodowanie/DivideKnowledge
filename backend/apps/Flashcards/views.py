@@ -2,16 +2,28 @@ from .models import *
 from .serializers import *
 
 from rest_framework.views import APIView
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from django.db.models import Count
 from django.db.models import Q
 
-class FlashcardCreateView(generics.CreateAPIView):
+class UserFlashcardsView(generics.ListAPIView):
+    serializer_class = FlashcardsSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.kwargs['pk']
+        return Flashcards.objects.filter(user=user)
+
+class FlashcardCreateView(generics.GenericAPIView):
     serializer_class = FlashcardCreateSerializer
-    queryset = Flashcards.objects.all()
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({'Flashcard created'}, status=status.HTTP_201_CREATED)
 
 class FlashcardsTopicsSearchView(APIView):
     def get(self, request):
@@ -31,15 +43,6 @@ class FlashcardsTopicsSearchView(APIView):
             topics_list.append(x.name)
 
         return Response(topics_list)
-
-
-class UserFlashcardsView(generics.ListAPIView):
-    serializer_class = FlashcardsSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        user = self.kwargs['pk']
-        return Flashcards.objects.filter(user=user)
 
 class FlashcardsCategoriesListView(generics.ListAPIView):
     queryset = Categories.objects.all().annotate(ids=Count('topics__id')).order_by('-ids')
@@ -64,6 +67,8 @@ class RandomFlashcardView(generics.ListAPIView):
             queries.add(Q(topic__name=t), Q.AND)
 
         return Flashcards.objects.filter(queries).order_by('?')[:1]
+
+
     
     
     
