@@ -17,7 +17,7 @@ export default function FlashCardsGenerator() {
 
     useEffect(() => {
         if(answer === '') return
-        axios.get(`${BASE_URL}/api/flashcards/filter?c=${category.name}${topic.name && 't=' + topic.name}`)
+        axios.get(`${BASE_URL}/api/flashcards/filter?c=${category.name}${topic.name && '&t=' + topic.name}`)
             .then(res => res.data)
             .then(data => setActiveCard(data[0]))
             .catch(err => alert(err))

@@ -10,10 +10,12 @@ import { NavigationProp } from "@react-navigation/native";
 import OwnFlashCards from "../components/profile/OwnFlashCards";
 import axios from "axios";
 import { BASE_URL } from "../constants/baseUrl";
+import FlashLists from "../components/profile/FlashLists";
 
 export type ProfileStackParams = {
     ProfileStack: undefined,
     OwnFlashCards: undefined,
+    FlashLists: undefined,
     AdminPanel?: undefined
 }
 
@@ -28,6 +30,9 @@ export default function ProfileScreen() {
             }} />
             <ProfileStack.Screen name="OwnFlashCards" component={OwnFlashCards} options={{
                 title: 'Dodane fiszki'
+            }} />
+            <ProfileStack.Screen name="FlashLists" component={FlashLists} options={{
+                title: 'FiszkoListy'
             }} />
             {is_staff && <ProfileStack.Screen name="AdminPanel" component={AdminPanel} options={{
                 title: 'Panel administracyjny'
@@ -56,6 +61,7 @@ const Profile = ({ navigation }: { navigation: ProfileNavigation}) => {
             <Text style={tw('font-medium text-xl')}>Witaj <Text style={tw('text-primary')}>{username}!</Text></Text>
             {is_staff && <Pressable onPress={() => navigation.navigate('AdminPanel')} style={tw('bg-blue-400 py-3 px-6 my-4')}><Text style={tw('text-white font-medium')}>Admin Panel</Text></Pressable>}
             <Pressable onPress={() => navigation.navigate('OwnFlashCards')} style={tw('bg-blue-400 py-3 px-6 my-4')}><Text style={tw('text-white font-medium')}>Dodane fiszki</Text></Pressable>
+            <Pressable onPress={() => navigation.navigate('FlashLists')} style={tw('bg-blue-400 py-3 px-6 my-4')}><Text style={tw('text-white font-medium')}>FiszkoListy</Text></Pressable>
             <Pressable onPress={handleLogout}><Text style={tw('text-red-400 font-medium')}>Wyloguj</Text></Pressable>
         </View>
     )
