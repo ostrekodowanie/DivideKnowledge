@@ -42,7 +42,7 @@ const NoteList = () => {
             .then(data => setNotes(data))
     }, [])
 
-    if(notes.length === 0) return <Loader />
+    // if(notes.length === 0) return <Loader />
 
     return (
         <ScrollView style={tw('p-4')}>

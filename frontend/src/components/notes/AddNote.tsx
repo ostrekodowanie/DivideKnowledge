@@ -7,9 +7,12 @@ import * as ImagePicker from 'expo-image-picker'
 import styles from "../../constants/styles";
 import PrimaryButton from "../PrimaryButton";
 import axios from "axios";
+import { BASE_URL } from "../../constants/baseUrl";
+import { useAppSelector } from "../../hooks/useAppSelector";
 
 export default function AddNote() {
     const tw = useTailwind()
+    const { id } = useAppSelector(state => state.login.user)
     const [newNote, setNewNote] = useState<NoteProps>({
         title: '',
         desc: '',
@@ -46,20 +49,25 @@ export default function AddNote() {
     const handleSubmit = async () => {
         const form = new FormData()
 
-        console.log(newNote.image)
-
+        form.append('user', JSON.stringify({ id }))
         form.append('title', newNote.title)
         form.append('desc', newNote.desc)
-        // @ts-ignore
-        form.append('image', newNote.image)
+        form.append('image', JSON.stringify(newNote.image))
         form.append('category', newNote.category)
 
-        const response = await axios.post('/api/notes/create', JSON.stringify(newNote), {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }).then(res => console.log(res))
-        .catch(err => console.log(err))
+        console.log(form)
+
+        try {
+            const response = await axios.post(`${BASE_URL}/api/notes/create`, JSON.stringify(newNote), {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            console.log(response.data)
+        }
+        catch(err) {
+            console.log(err)
+        }
     }
 
     return (
