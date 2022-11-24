@@ -1,4 +1,4 @@
-import { Pressable, Text, TextInput, View } from "react-native";
+import { Pressable, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useState, useContext } from 'react'
 import axios from "axios";
 import Loader from "../Loader";
@@ -9,6 +9,8 @@ import jwtDecode from "jwt-decode";
 import { useDispatch } from "react-redux";
 import { login } from "../../../reducers/login";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import PrimaryInput from "../PrimaryInput";
+import PrimaryButton from "../PrimaryButton";
 
 export default function Login() {
     const tw = useTailwind()
@@ -39,22 +41,27 @@ export default function Login() {
     if(status === 'loading') return <Loader />
 
     return (
-        <View>
-            <Text style={tw('text-2xl text-center font-bold my-5')}>Zaloguj się</Text>
-            <TextInput
-                style={tw('mb-2 text-[1rem]')}
-                placeholder="Email"
-                onChangeText={text => setUserData(prev => ({ ...prev, email: text }))}
-            />
-            <TextInput
-                style={tw('mb-2 text-[1rem]')}
-                placeholder="Hasło"
-                onChangeText={text => setUserData(prev => ({ ...prev, password: text }))}
-                secureTextEntry={true}
-            />
+        <View style={tw('flex-1 mt-8 items-stretch w-full px-12')}>
+            <Text style={{ fontFamily: 'Bold', ...tw('text-3xl text-center my-5')}}>Zaloguj się</Text>
+            <ScrollView>
+                <PrimaryInput
+                    field="email"
+                    setState={setUserData}
+                    label='Email'
+                />
+                <PrimaryInput
+                    field="password"
+                    setState={setUserData}
+                    label='Hasło'
+                    secured={true}
+                />
+                <Text style={{fontFamily: 'SemiBold'}}>Zapomniałeś hasła? <TouchableOpacity><Text style={{ fontFamily: 'Bold'}}>Zresetuj hasło</Text></TouchableOpacity></Text>
+            </ScrollView>
             {status && <Text style={tw('text-red-400')}>{status}</Text>}
-            <Text>Nie posiadasz konta? <Pressable onPress={() => setAuthFormIndex(0)}><Text style={tw('text-blue-400 font-medium')}>Zarejestruj się</Text></Pressable></Text>
-            <Pressable style={tw('py-3 px-6 rounded bg-blue-400')} onPress={handleSubmit}><Text style={tw('font-medium text-white')}>Zaloguj</Text></Pressable>
+            <View style={tw('my-10')}>
+                <PrimaryButton text="Zaloguj" onPress={handleSubmit} />
+                <Pressable style={tw('w-full items-center py-4')} onPress={() => setAuthFormIndex(0)}><Text style={{ fontFamily: 'ExtraBold', ...tw('text-[1.1rem] mt-2')}}>Zarejestruj się</Text></Pressable>
+            </View>
         </View>
     )
 }

@@ -11,6 +11,7 @@ import OwnFlashCards from "../components/profile/OwnFlashCards";
 import axios from "axios";
 import { BASE_URL } from "../constants/baseUrl";
 import FlashLists from "../components/profile/FlashLists";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export type ProfileStackParams = {
     ProfileStack: undefined,
@@ -24,9 +25,12 @@ const ProfileStack = createNativeStackNavigator<ProfileStackParams>()
 export default function ProfileScreen() {
     const { is_staff } = useAppSelector(state => state.login.user)
     return (
-        <ProfileStack.Navigator initialRouteName="ProfileStack">
+        <ProfileStack.Navigator initialRouteName="ProfileStack" screenOptions={{
+            headerTitleStyle: { fontFamily: 'Bold' }
+        }}>
             <ProfileStack.Screen name="ProfileStack" component={Profile} options={{
-                title: 'Profil'
+                title: 'Profil',
+                headerShown: false
             }} />
             <ProfileStack.Screen name="OwnFlashCards" component={OwnFlashCards} options={{
                 title: 'Dodane fiszki'
@@ -57,12 +61,12 @@ const Profile = ({ navigation }: { navigation: ProfileNavigation}) => {
     }
 
     return (
-        <View style={tw('p-4')}>
-            <Text style={tw('font-medium text-xl')}>Witaj <Text style={tw('text-primary')}>{username}!</Text></Text>
-            {is_staff && <Pressable onPress={() => navigation.navigate('AdminPanel')} style={tw('bg-blue-400 py-3 px-6 my-4')}><Text style={tw('text-white font-medium')}>Admin Panel</Text></Pressable>}
-            <Pressable onPress={() => navigation.navigate('OwnFlashCards')} style={tw('bg-blue-400 py-3 px-6 my-4')}><Text style={tw('text-white font-medium')}>Dodane fiszki</Text></Pressable>
-            <Pressable onPress={() => navigation.navigate('FlashLists')} style={tw('bg-blue-400 py-3 px-6 my-4')}><Text style={tw('text-white font-medium')}>FiszkoListy</Text></Pressable>
-            <Pressable onPress={handleLogout}><Text style={tw('text-red-400 font-medium')}>Wyloguj</Text></Pressable>
-        </View>
+        <SafeAreaView style={tw('p-4')}>
+            <Text style={tw('font-medium mb-4 text-2xl')}>Witaj <Text style={tw('text-primary')}>{username}!</Text></Text>
+            {is_staff && <Pressable onPress={() => navigation.navigate('AdminPanel')} style={tw('bg-blue-400 py-3 px-6 my-2')}><Text style={tw('text-white font-medium')}>Admin Panel</Text></Pressable>}
+            <Pressable onPress={() => navigation.navigate('OwnFlashCards')} style={tw('bg-blue-400 py-3 px-6 my-2')}><Text style={tw('text-white font-medium')}>Dodane fiszki</Text></Pressable>
+            <Pressable onPress={() => navigation.navigate('FlashLists')} style={tw('bg-blue-400 py-3 px-6 my-2')}><Text style={tw('text-white font-medium')}>FiszkoListy</Text></Pressable>
+            <Pressable onPress={handleLogout}><Text style={tw('text-red-400 mt-4 font-medium')}>Wyloguj</Text></Pressable>
+        </SafeAreaView>
     )
 }

@@ -23,7 +23,7 @@ import { useFonts,
         Dosis_700Bold as Bold,
         Dosis_800ExtraBold as ExtraBold
 } from '@expo-google-fonts/dosis';
-import { View } from 'react-native';
+import { KeyboardAvoidingView, View } from 'react-native';
 
 export type RootTabParams = {
   Home: undefined,
@@ -100,10 +100,11 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <RootTab.Navigator screenOptions={{ 
+      <RootTab.Navigator screenOptions={{
+        headerTitleStyle: { fontFamily: 'Bold' },
         tabBarActiveTintColor: '#10DC49', 
         tabBarInactiveTintColor: '#3A234E', 
-        tabBarLabelStyle: tw('font-semibold text-[0.8rem]'),
+        tabBarLabelStyle: {...tw('text-[.9rem]'), fontFamily: 'Bold'},
         tabBarStyle: tw('h-20 px-4 py-[0.9rem]')
       }}>
         <RootTab.Screen name='Home' component={HomeScreen} options={{
