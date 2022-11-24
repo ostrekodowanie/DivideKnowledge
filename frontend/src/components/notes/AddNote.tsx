@@ -44,13 +44,22 @@ export default function AddNote() {
     }
 
     const handleSubmit = async () => {
-        const formData = new FormData()
+        const form = new FormData()
 
-        Object.values(newNote).forEach(key => console.log(key))
+        console.log(newNote.image)
 
-        formData.append('title', newNote.title)
+        form.append('title', newNote.title)
+        form.append('desc', newNote.desc)
+        // @ts-ignore
+        form.append('image', newNote.image)
+        form.append('category', newNote.category)
 
-        // const response = await axios.post('/api/notes/create', JSON.stringify(newNote))
+        const response = await axios.post('/api/notes/create', JSON.stringify(newNote), {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then(res => console.log(res))
+        .catch(err => console.log(err))
     }
 
     return (
