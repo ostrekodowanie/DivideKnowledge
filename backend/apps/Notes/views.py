@@ -4,7 +4,7 @@ from .serializers import *
 
 from rest_framework.permissions import IsAuthenticated
 
-class NotesListCreateView(generics.ListCreateAPIView):
+class NotesListCreateView(generics.CreateAPIView):
     queryset = Notes.objects.all()
     serializer_class = NotesSerializer
 
