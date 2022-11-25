@@ -42,14 +42,14 @@ export default function AddNote() {
                 name: imageName ? imageName : '',
                 type
             }
-            setNewNote(prev => ({ ...prev, image: image }))
+            setNewNote(prev => ({ ...prev, image }))
         }
     }
 
     const handleSubmit = async () => {
         const form = new FormData()
 
-        form.append('user', JSON.stringify({ id }))
+        form.append('user', String(id))
         form.append('title', newNote.title)
         form.append('desc', newNote.desc)
         form.append('image', JSON.stringify(newNote.image))
@@ -57,17 +57,9 @@ export default function AddNote() {
 
         console.log(form)
 
-        try {
-            const response = await axios.post(`${BASE_URL}/api/notes/create`, JSON.stringify(newNote), {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
-            console.log(response.data)
-        }
-        catch(err) {
-            console.log(err)
-        }
+        const response = await axios.postForm(`${BASE_URL}/api/notes/create`, form)
+            .then(res => console.log(res))
+            .catch(err => console.log(err))
     }
 
     return (

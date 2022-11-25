@@ -12,8 +12,6 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['name']
 
 class NotesSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
-    category = CategorySerializer()
     class Meta:
         model = Notes
         fields = ['user', 'title', 'desc', 'image', 'category']

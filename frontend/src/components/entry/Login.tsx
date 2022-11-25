@@ -42,7 +42,7 @@ export default function Login() {
 
     return (
         <View style={tw('flex-1 mt-8 items-stretch w-full px-12')}>
-            <Text style={{ fontFamily: 'Bold', ...tw('text-3xl text-center my-5')}}>Zaloguj się</Text>
+            <Text style={{ fontFamily: 'Bold', ...tw('text-4xl text-center my-5')}}>Zaloguj się</Text>
             <ScrollView>
                 <PrimaryInput
                     field="email"

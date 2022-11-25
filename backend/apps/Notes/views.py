@@ -3,8 +3,10 @@ from .models import *
 from .serializers import *
 
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.parsers import MultiPartParser, FormParser
 
 class NotesListCreateView(generics.CreateAPIView):
+    parser_classes = (MultiPartParser, FormParser)
     queryset = Notes.objects.all()
     serializer_class = NotesSerializer
 
