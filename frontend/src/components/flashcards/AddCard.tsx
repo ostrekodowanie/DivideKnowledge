@@ -26,7 +26,9 @@ export default function AddCard() {
         topic: '',
         question: '',
         type: null,
-        answers: []
+        answers: [
+            { content: '', correct: true }
+        ]
     })
 
     useEffect(() => {
@@ -57,7 +59,6 @@ export default function AddCard() {
     }
 
     if(status === 'loading') return <Loader />
-    if(status) return <Text>{status}</Text>
     
     return (
         <View style={tw('p-4 flex-1 items-center')}>
@@ -88,11 +89,18 @@ export default function AddCard() {
                 rowTextForSelection={text => text}
             />
             <TextInput style={tw('text-lg mb-4')} placeholder="Pytanie" onChangeText={text => setNewCard(prev => ({ ...prev, question: text}))} />
-            {newCard.type && (newCard.type === 'input' ? <TextInput placeholder="Odpowiedź" style={tw('text-lg')} onChangeText={text => setNewCard(prev => ({ ...prev, answers: [{ content: text, correct: true }]}))} /> :
+            {newCard.type && <TextInput placeholder="Prawidłowa odpowiedź" style={tw('text-lg')} onChangeText={text => setNewCard(prev => {
+                let indexOfCorrect = prev.answers.findIndex(item => item.correct)
+                let newArr = prev.answers
+                newArr[indexOfCorrect].content = text
+                return { ...prev, answers: newArr }
+            })} />}
+            {newCard.type && newCard.type === 'radio' &&
                 <>
-                    {newCard.answers.map((answer, i) => <TextInput placeholder="Odpowiedź" key={i} onChangeText={text => setNewCard(prev => {
+                    {newCard.answers.map((answer, i) => <TextInput placeholder="Zła odpowiedź" key={i} onChangeText={text => setNewCard(prev => {
                         let newArr = prev.answers
                         newArr[i].content = text
+                        newArr[i].correct = false
                         return { ...prev, answers: newArr}
                     })} />)}
                     <Pressable 
@@ -104,10 +112,10 @@ export default function AddCard() {
                         })}} 
                         style={tw('bg-blue-400 py-3 px-6')}
                     >
-                        <Text style={tw('font-medium')}>Dodaj odpowiedź</Text>
+                        <Text style={tw('font-medium text-white')}>Dodaj złą odpowiedź</Text>
                     </Pressable>
                 </>
-            )}
+            }
             <Pressable style={tw('bg-primary py-3 px-6 mt-8')} onPress={handleAdd}><Text style={tw('text-white rounded font-medium')}>Dodaj</Text></Pressable>
         </View>
     )

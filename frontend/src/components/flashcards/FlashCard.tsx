@@ -1,12 +1,13 @@
-import { Pressable, SafeAreaView, Text, TextInput, TouchableOpacity } from "react-native";
+import { Pressable, Text, TextInput, View } from "react-native";
 import { useState, useEffect, useContext } from 'react'
 import { useTailwind } from "tailwind-rn/dist";
 import { AnswerContext } from "../../context/AnswerProvider";
+import PrimaryButton from "../PrimaryButton";
 
 export interface AnswerType {
     id?: number,
     content: string,
-    correct: boolean,
+    correct: boolean | undefined
 }
 
 export interface FlashCardProps {
@@ -33,20 +34,36 @@ export default function FlashCard(props: FlashCardProps) {
     }, [props])
 
     return (
-        <SafeAreaView style={tw('flex-1 items-center justify-center')}>
+        <View style={tw('flex-1 p-4 justify-center')}>
             <Text style={tw('font-bold text-3xl text-center')}>{question.split("[input]").join(".....")}</Text>
             {type === 'radio' && answers.map(answer => <RadioAnswer {...answer} key={answer.id} />)}
             {type === 'input' && <InputAnswer />}
             {status && <Text style={status === 'correct' ? tw('text-green-400') : tw('text-red-400')}>{status}</Text>}
-        </SafeAreaView>
+        </View>
     )
 }
 
 
 const RadioAnswer = (props: AnswerType) => {
+    const { correct, content } = props
+    const { answer, setAnswer } = useContext(AnswerContext)
     const tw = useTailwind()
-    const { setAnswer } = useContext(AnswerContext)
-    return <TouchableOpacity onPress={() => setAnswer(props.content)}><Text style={tw('text-lg')}>{props.content}</Text></TouchableOpacity>
+    const [isCorrect, setIsCorrect] = useState<boolean | undefined>(undefined)
+
+    useEffect(() => {
+        if(!answer || (content !== answer && !correct)) return
+        setIsCorrect(correct)
+        return () => {
+            setIsCorrect(undefined)
+        }
+    }, [answer])
+
+    return (
+        <View style={tw('relative mb-4')}>
+            <Pressable style={tw(`py-3 px-6 border-[3px] mt-3 rounded-2xl relative z-10 w-full bg-white  ${isCorrect ? 'bg-[#C2FAD2] border-primary' : isCorrect === false ? 'border-wrong bg-[#FFB1BF]' : 'border-[#E3E8E4]'}`)} onPress={() => setAnswer(content)}><Text style={tw('text-lg')}>{content}</Text></Pressable>
+            <View style={tw(`absolute left-0 right-0 h-[2rem] bg-darkPrimary -bottom-[0.4rem] rounded-b-2xl ${isCorrect ? 'bg-primary' : isCorrect === false ? 'bg-wrong' : 'bg-[#E3E8E4]'}`)} />
+        </View>
+    )
 }
 
 const InputAnswer = () => {
@@ -62,7 +79,7 @@ const InputAnswer = () => {
     return (
         <>
             <TextInput style={tw('text-lg my-4')} placeholder="Odpowiedź" value={input} onChangeText={text => setInput(text.toLowerCase())} />
-            <Pressable style={tw('py-3 px-6 bg-blue-400')} onPress={() => setAnswer(input)}><Text style={tw('text-white')}>Zatwierdź</Text></Pressable>
+            <PrimaryButton onPress={() => setAnswer(input)} text="Zatwierdź" />
         </>
     )
 }

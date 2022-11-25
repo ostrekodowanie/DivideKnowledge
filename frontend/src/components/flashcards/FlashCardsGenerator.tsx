@@ -17,10 +17,15 @@ export default function FlashCardsGenerator() {
 
     useEffect(() => {
         if(answer === '') return
+        let isCancelled = false
         axios.get(`${BASE_URL}/api/flashcards/filter?c=${category.name}${topic.name && '&t=' + topic.name}`)
             .then(res => res.data)
-            .then(data => setActiveCard(data[0]))
+            .then(data => !isCancelled && setActiveCard(data[0]))
             .catch(err => alert(err))
+
+        return () => {
+            isCancelled = true
+        }
     }, [answer])
 
     useEffect(() => {

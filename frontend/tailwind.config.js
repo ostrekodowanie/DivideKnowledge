@@ -9,7 +9,8 @@ module.exports = {
         primary: '#10DC49',
         darkPrimary: '#0CA236',
         font: '#212C24',
-        fontLight: '#717873'
+        fontLight: '#717873',
+        wrong: '#EE3354'
       }
     },
   },
