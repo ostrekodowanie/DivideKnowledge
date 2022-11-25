@@ -1,10 +1,12 @@
-import { Modal, Pressable, Text, TextInput, View } from "react-native";
+import { Modal, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { useState, useContext } from 'react'
 import axios from "axios";
 import Loader from "../Loader";
 import { BASE_URL } from "../../constants/baseUrl";
 import { useTailwind } from "tailwind-rn/dist";
 import { AuthFormContext } from "../../context/AuthFormProvider";
+import PrimaryInput from "../PrimaryInput";
+import PrimaryButton from "../PrimaryButton";
 
 export default function Register() {
     const tw = useTailwind()
@@ -37,34 +39,38 @@ export default function Register() {
     if(status === 'Registered') return <Text>Zarejestrowano</Text>
 
     return (
-        <View>
-            <Text style={tw('text-2xl text-center font-bold my-5')}>Zarejestruj się</Text>
-            <TextInput
-                style={tw('mb-2 text-[1rem]')}
-                placeholder="Nazwa użytkownika"
-                onChangeText={text => setUserData(prev => ({ ...prev, username: text }))}
-            />
-            <TextInput
-                style={tw('mb-2 text-[1rem]')}
-                placeholder="Email"
-                onChangeText={text => setUserData(prev => ({ ...prev, email: text }))}
-            />
-            <TextInput
-                style={tw('mb-2 text-[1rem]')}
-                placeholder="Hasło"
-                onChangeText={text => setUserData(prev => ({ ...prev, password: text }))}
-                secureTextEntry={true}
-            />
-            <TextInput
-                style={tw('mb-2 text-[1rem]')}
-                placeholder="Powtórz hasło"
-                onChangeText={text => setConfPassword(text)}
-                secureTextEntry={true}
-            />
+        <View style={tw('flex-1 mt-8 items-stretch w-full px-12')}>
+            <Text style={{ fontFamily: 'Bold', ...tw('text-4xl text-center my-5')}}>Załóż <Text style={tw('text-primary')}>bezpłatne</Text> konto</Text>
+            <ScrollView style={tw('flex-1')}>
+                <PrimaryInput
+                    field='username'
+                    label='Nazwa użytkownika'
+                    setState={setUserData}
+                />
+                <PrimaryInput
+                    field='email'
+                    label='Email'
+                    setState={setUserData}
+                />
+                <PrimaryInput
+                    field='password'
+                    label='Hasło'
+                    secured={true}
+                    setState={setUserData}
+                />
+                <PrimaryInput
+                    field='confPassword'
+                    label='Powtórz hasło'
+                    secured={true}
+                    setState={setConfPassword}
+                />
+            </ScrollView>
             {status && status !== 'loading' && <Text style={tw('text-red-400')}>{status}</Text>}
             {status === 'loading' && <Loader />}
-            <Text style={tw('my-4')}>Już posiadasz konto? <Pressable onPress={() => setAuthFormIndex(1)}><Text style={tw('text-blue-400 font-medium')}>Zaloguj się</Text></Pressable></Text>
-            <Pressable style={tw('py-3 px-6 rounded bg-blue-400')} onPress={handleSubmit}><Text style={tw('font-medium text-white')}>Zarejestruj</Text></Pressable>
+            <View style={tw('my-10')}>
+                <PrimaryButton text="Zarejestruj" onPress={handleSubmit} />
+                <Pressable style={tw('w-full items-center py-4')} onPress={() => setAuthFormIndex(1)}><Text style={{ fontFamily: 'ExtraBold', ...tw('text-[1.1rem] mt-2')}}>Zaloguj się</Text></Pressable>
+            </View>
             <Modal visible={modal} animationType='slide'>
                 <Text>Na podany email wysłaliśmy kod weryfikacyjny.</Text>
                 <TextInput placeholder="Kod" onChangeText={text => setVerificationCode(text)} />

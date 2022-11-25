@@ -7,7 +7,11 @@ import { NoteStackParams } from "../../screens/NotesScreen";
 export interface NoteProps {
     title: string,
     desc: string,
-    image: string,
+    image: {
+        uri: string,
+        name: string,
+        type: string
+    },
     category: string
 }
 
@@ -18,8 +22,8 @@ export default function Note({ route }: { route: NoteRouteProp}) {
     const { title, desc, image } = route.params
     return (
         <View style={tw('p-4')}>
-            <Image style={{...styles.image}} source={{
-                uri: image
+            <Image style={{...styles.imageCover}} source={{
+                uri: image.uri
             }} />
             <Text style={tw('font-bold text-xl')}>{title}</Text>
             <Text>{desc}</Text>

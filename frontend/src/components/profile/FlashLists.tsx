@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import { BASE_URL } from "../../constants/baseUrl";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { FlashCardProps } from "../flashcards/FlashCard";
+import Loader from "../Loader";
+import { useTailwind } from "tailwind-rn/dist";
 
 export interface FlashListProps {
     name: string,
@@ -11,17 +13,25 @@ export interface FlashListProps {
 }
 
 export default function FlashLists() {
+    const tw = useTailwind()
+    const [loading, setLoading] = useState(true)
     const [flashLists, setFlashLists] = useState<FlashListProps[]>([])
-    const { id } = useAppSelector(state => state.login.user)
+    const auth = useAppSelector(state => state.login)
+    const { id } = auth.user
+    const { access } = auth.tokens
 
     useEffect(() => {
-        axios.get(`${BASE_URL}/api/flashlists/user/${id}`, { headers: { 'Content-Type': 'application/json' }})
+        axios.get(`${BASE_URL}/api/flashlists/user/${id}`, { headers: { 'Authorization': 'Bearer ' + access }})
             .then(res => res.data)
             .then(data => setFlashLists(data))
+            .finally(() => setLoading(false))
     }, [])
 
+    if(loading) return <Loader />
+    if(flashLists.length === 0) return <Pressable><Text style={{ fontFamily: 'Bold' }}>Dodaj FiszkoListę</Text></Pressable>
+
     return (
-        <View style={{ paddingHorizontal: 4 }}>
+        <View style={tw('p-4')}>
             {flashLists.map(list => <FlashListRef {...list} key={list.name} />)}
         </View>
     )

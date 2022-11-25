@@ -11,12 +11,12 @@ export default function EntryScreen() {
     const { step, setStep, form } = useMultiStepForm([<Info />, <Auth />])
 
     return (
-        <SafeAreaView style={tw('h-full items-center justify-center')}>
+        <SafeAreaView style={tw('flex-1 items-center justify-start')}>
             <StepDisplayer step={step} />
             {step !== 1 ? form :
                 <View style={tw('px-4 w-full mb-8 items-center justify-center')}>
                     {form}
-                    <PrimaryButton onPress={() => setStep(2)} />
+                    <PrimaryButton text="Zaczynajmy!" width="[70%]" onPress={() => setStep(2)} />
                 </View>
             }
         </SafeAreaView>
@@ -26,7 +26,7 @@ export default function EntryScreen() {
 const StepDisplayer = ({ step }: { step: number }) => {
     const tw = useTailwind()
     return (
-        <View style={tw('bg-[#E0E4E1] absolute top-12 rounded-xl h-[0.4rem] overflow-hidden w-[40%] flex-row')}>
+        <View style={tw('bg-[#E0E4E1] mt-8 rounded-xl h-[0.4rem] overflow-hidden w-[40%] flex-row')}>
             <View style={step === 1 ? tw('bg-primary rounded-xl w-[50%]') : tw('w-[50%]')} />
             <View style={step === 2 ? tw('bg-primary rounded-xl w-[50%]') : tw('w-[50%]')} />
         </View>
