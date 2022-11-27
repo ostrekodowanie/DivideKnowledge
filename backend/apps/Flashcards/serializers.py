@@ -1,10 +1,5 @@
 from rest_framework import serializers
-from .models import *
-
-class CategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Categories
-        fields = ['id', 'name', 'image']
+from .models import Flashcards, Answers, Categories, Topics, User
 
 class AnswersSerializer(serializers.ModelSerializer):
     class Meta:

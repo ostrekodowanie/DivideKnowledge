@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser, FileUploadParser
 
 class NoteCreateView(generics.CreateAPIView):
-    parser_classes = (MultiPartParser, FormParser, FileUploadParser)
+    parser_classes = (FileUploadParser,)
     queryset = Notes.objects.all()
     serializer_class = NotesSerializer
 

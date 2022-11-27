@@ -15,7 +15,6 @@ class User(AbstractUser):
     plan = models.CharField(max_length=255, choices=PLANS, default='Free')
     is_verified = models.BooleanField(default=False)
 
-
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
