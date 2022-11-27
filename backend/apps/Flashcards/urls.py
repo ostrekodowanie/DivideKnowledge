@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path('api/category', views.CategoryView.as_view()),
     path('api/flashcards/create', views.FlashcardCreateView.as_view()),
     path('api/flashcards/user/<pk>', views.UserFlashcardsView.as_view()),
     path('api/flashcards/categories', views.FlashcardsCategoriesListView.as_view()),
