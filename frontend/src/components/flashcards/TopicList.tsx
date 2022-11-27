@@ -32,7 +32,7 @@ export default function TopicList({ navigation, route }: { navigation: TopicList
     }, [])
 
     return (
-        <ScrollView style={tw('p-4')}>
+        <ScrollView style={tw('p-6')}>
             <Pressable onPress={() => navigation.navigate('AddCard')}><Text style={tw('text-blue-400 font-medium mb-4 text-[1rem]')}>Dodaj fiszkę</Text></Pressable>
             {topics.length > 0 ? topics.map(topic => <Topic {...topic} category={category} key={topic.name} />) : <Loader />}
         </ScrollView>

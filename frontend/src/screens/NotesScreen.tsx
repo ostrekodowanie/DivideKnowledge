@@ -45,7 +45,7 @@ const NoteList = () => {
     // if(notes.length === 0) return <Loader />
 
     return (
-        <ScrollView style={tw('p-4')}>
+        <ScrollView style={tw('p-6')}>
             <Pressable onPress={() => navigation.navigate('AddNote')}><Text style={tw('text-blue-400 mb-4')}>Dodaj notatkę</Text></Pressable>
             {notes.map(note => <NoteRef {...note} key={note.title} />)}
         </ScrollView>

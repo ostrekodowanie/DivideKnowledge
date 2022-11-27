@@ -26,7 +26,7 @@ export default function CategoryList({ navigation }: { navigation: CategoryNavig
             .catch(err => alert(err))
     }, [])
 
-    return <ScrollView style={tw('p-4')}>
+    return <ScrollView style={tw('p-6')}>
         <Pressable onPress={() => navigation.navigate('AddCard')}><Text style={tw('text-blue-400 font-medium mb-4 text-[1rem]')}>Dodaj fiszkę</Text></Pressable>
         {categories.length > 0 ? categories.map(category => <Category {...category} key={category.name} />): <Loader />}
     </ScrollView>

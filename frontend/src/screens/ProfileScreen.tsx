@@ -61,7 +61,7 @@ const Profile = ({ navigation }: { navigation: ProfileNavigation}) => {
     }
 
     return (
-        <SafeAreaView style={tw('p-4')}>
+        <SafeAreaView style={tw('p-6 flex-1 bg-[#FCFCFC]')}>
             <Text style={tw('font-medium mb-4 text-2xl')}>Witaj <Text style={tw('text-primary')}>{username}!</Text></Text>
             {is_staff && <Pressable onPress={() => navigation.navigate('AdminPanel')} style={tw('bg-blue-400 py-3 px-6 my-2')}><Text style={tw('text-white font-medium')}>Admin Panel</Text></Pressable>}
             <Pressable onPress={() => navigation.navigate('OwnFlashCards')} style={tw('bg-blue-400 py-3 px-6 my-2')}><Text style={tw('text-white font-medium')}>Dodane fiszki</Text></Pressable>

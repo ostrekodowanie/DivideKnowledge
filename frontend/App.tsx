@@ -23,7 +23,6 @@ import { useFonts,
         Dosis_700Bold as Bold,
         Dosis_800ExtraBold as ExtraBold
 } from '@expo-google-fonts/dosis';
-import { KeyboardAvoidingView, View } from 'react-native';
 
 export type RootTabParams = {
   Home: undefined,
@@ -96,7 +95,7 @@ export default function App() {
   }, [refresh])
 
   if(loading || !isFontLoaded) return <Loader />
-  if(!logged) return <EntryScreen />
+  if(logged) return <EntryScreen />
 
   return (
     <NavigationContainer>
@@ -109,22 +108,22 @@ export default function App() {
       }}>
         <RootTab.Screen name='Home' component={HomeScreen} options={{
           title: 'Eksploruj',
-          tabBarIcon: ({ focused }) => <HomeIcon fill={focused ? '#10DC49' : '#3A234E'} height={25} width={21} />
+          tabBarIcon: ({ focused }) => <HomeIcon stroke={focused ? '#10DC49' : '#3A234E'} strokeWidth='2' height={27} width={25} />
         }} />
         <RootTab.Screen name='FlashCards' component={FlashCardsScreen} options={{
           title: 'Fiszki',
           headerShown: false,
-          tabBarIcon: ({ focused }) => <FlashCardsIcon fill={focused ? '#10DC49' : '#3A234E'} height={22} width={20} />
+          tabBarIcon: ({ focused }) => <FlashCardsIcon stroke={focused ? '#10DC49' : '#3A234E'} strokeWidth='2' height={25} width={22} />
         }} />
         <RootTab.Screen name='Notes' component={NotesScreen} options={{
           title: 'Notatki',
           headerShown: false,
-          tabBarIcon: ({ focused }) => <NotesIcon fill={focused ? '#10DC49' : '#3A234E'} height={22} width={20} />
+          tabBarIcon: ({ focused }) => <NotesIcon stroke={focused ? '#10DC49' : '#3A234E'} strokeWidth='2' height={26} width={23} />
         }} />
         <RootTab.Screen name='Profile' component={ProfileScreen} options={{
           title: 'Profil',
           headerShown: false,
-          tabBarIcon: ({ focused }) => <ProfileIcon fill={focused ? '#10DC49' : '#3A234E'} height={22} width={20} />
+          tabBarIcon: ({ focused }) => <ProfileIcon stroke={focused ? '#10DC49' : '#3A234E'} strokeWidth='2' height={26} width={24} />
         }} />
       </RootTab.Navigator>
     </NavigationContainer>

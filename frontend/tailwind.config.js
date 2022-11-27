@@ -10,7 +10,8 @@ module.exports = {
         darkPrimary: '#0CA236',
         font: '#212C24',
         fontLight: '#717873',
-        wrong: '#EE3354'
+        wrong: '#EE3354',
+        stroke: '#E3E8E4'
       }
     },
   },

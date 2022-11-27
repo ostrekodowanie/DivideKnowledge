@@ -16,7 +16,7 @@ export default function EntryScreen() {
             {step !== 1 ? form :
                 <View style={tw('px-4 w-full mb-8 items-center justify-center')}>
                     {form}
-                    <PrimaryButton text="Zaczynajmy!" width="[70%]" onPress={() => setStep(2)} />
+                    <PrimaryButton text="Zaczynajmy!" onPress={() => setStep(2)} />
                 </View>
             }
         </SafeAreaView>

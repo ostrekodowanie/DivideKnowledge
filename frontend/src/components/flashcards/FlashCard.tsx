@@ -34,7 +34,7 @@ export default function FlashCard(props: FlashCardProps) {
     }, [props])
 
     return (
-        <View style={tw('flex-1 p-4 justify-center')}>
+        <View style={tw('flex-1 p-6 justify-center')}>
             <Text style={tw('font-bold text-3xl text-center')}>{question.split("[input]").join(".....")}</Text>
             {type === 'radio' && answers.map(answer => <RadioAnswer {...answer} key={answer.id} />)}
             {type === 'input' && <InputAnswer />}
