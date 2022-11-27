@@ -9,6 +9,10 @@ from rest_framework.response import Response
 from django.db.models import Count
 from django.db.models import Q
 
+class CategoryView(generics.CreateAPIView):
+    serializer_class = CategorySerializer
+    queryset = Categories.objects.all()
+
 class UserFlashcardsView(generics.ListAPIView):
     serializer_class = FlashcardsSerializer
     permission_classes = [IsAuthenticated]
@@ -45,7 +49,7 @@ class FlashcardsTopicsSearchView(APIView):
         return Response(topics_list)
 
 class FlashcardsCategoriesListView(generics.ListAPIView):
-    queryset = Categories.objects.all().annotate(ids=Count('topics__id')).order_by('-ids')
+    queryset = Categories.objects.all()#.annotate(ids=Count('topics__id')).order_by('-ids')
     serializer_class = FlashcardsCategoriesListSerializer
 
 class FlashcardsTopicsListView(generics.ListAPIView):
