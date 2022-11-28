@@ -57,6 +57,16 @@
   margin-bottom: 2rem
 }
 
+.mx-2 {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem
+}
+
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem
+}
+
 .mb-4 {
   margin-bottom: 1rem
 }
@@ -113,6 +123,18 @@
   margin-top: 1.5rem
 }
 
+.mr-2 {
+  margin-right: 0.5rem
+}
+
+.mr-3 {
+  margin-right: 0.75rem
+}
+
+.mr-1 {
+  margin-right: 0.25rem
+}
+
 .h-20 {
   height: 5rem
 }
@@ -131,6 +153,10 @@
 
 .h-16 {
   height: 4rem
+}
+
+.h-24 {
+  height: 6rem
 }
 
 .h-\[10rem\] {
@@ -197,10 +223,6 @@
   border-radius: 0.75rem
 }
 
-.rounded {
-  border-radius: 0.25rem
-}
-
 .rounded-b-2xl {
   border-bottom-right-radius: 1rem;
   border-bottom-left-radius: 1rem
@@ -233,19 +255,9 @@
   border-color: rgb(227 232 228 / var(--tw-border-opacity))
 }
 
-.border-darkPrimary {
-  --tw-border-opacity: 1;
-  border-color: rgb(12 162 54 / var(--tw-border-opacity))
-}
-
 .border-wrong {
   --tw-border-opacity: 1;
   border-color: rgb(238 51 84 / var(--tw-border-opacity))
-}
-
-.border-fontLight {
-  --tw-border-opacity: 1;
-  border-color: rgb(113 120 115 / var(--tw-border-opacity))
 }
 
 .border-b-\[\#E3E8E4\] {
@@ -356,6 +368,11 @@
   padding-bottom: 0.25rem
 }
 
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem
+}
+
 .text-center {
   text-align: center
 }
@@ -377,11 +394,6 @@
   font-size: 1rem
 }
 
-.text-lg {
-  font-size: 1.125rem;
-  line-height: 1.75rem
-}
-
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem
@@ -401,16 +413,17 @@
   line-height: 2.5rem
 }
 
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem
+}
+
 .font-bold {
   font-weight: 700
 }
 
 .font-medium {
   font-weight: 500
-}
-
-.font-semibold {
-  font-weight: 600
 }
 
 .leading-\[1\.7rem\] {
@@ -460,4 +473,9 @@
 .text-green-400 {
   --tw-text-opacity: 1;
   color: rgb(74 222 128 / var(--tw-text-opacity))
+}
+
+.text-stroke {
+  --tw-text-opacity: 1;
+  color: rgb(227 232 228 / var(--tw-text-opacity))
 }

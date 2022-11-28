@@ -1,9 +1,10 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import axios from 'axios';
-import { useEffect, useState } from 'react'
-import { Image, Pressable, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import React, { SetStateAction, useEffect, useState } from 'react'
+import { FlatList, Image, Pressable, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useTailwind } from 'tailwind-rn';
+import { CategoryProps } from '../components/flashcards/CategoryList';
 import Loader from '../components/Loader';
 import AddNote from '../components/notes/AddNote';
 import Note, { NoteProps } from '../components/notes/Note';
@@ -31,24 +32,65 @@ export default function NotesScreen() {
 
 type NoteRefNavigationProp = NavigationProp<NoteStackParams, 'NoteList'>
 
+interface Filter {
+    category: string
+}
+
 const NoteList = () => {
     const navigation = useNavigation<NoteRefNavigationProp>()
     const tw = useTailwind()
+    const [loading, setLoading] = useState(true)
     const [notes, setNotes] = useState<NoteProps[]>([])
+    const [filter, setFilter] = useState<Filter>({
+        category: 'Wszystkie'
+    })
 
     useEffect(() => {
-        axios.get(`${BASE_URL}/api/notes`)
+        setLoading(true)
+        axios.get(`${BASE_URL}/api/notes${filter.category && '?c=' + filter.category}`)
             .then(res => res.data)
             .then(data => setNotes(data))
-    }, [])
-
-    if(notes.length === 0) return <Loader />
+            .finally(() => setLoading(false))
+    }, [filter])
 
     return (
-        <ScrollView style={tw('p-6')}>
-            <Pressable onPress={() => navigation.navigate('AddNote')}><Text style={tw('text-blue-400 mb-4')}>Dodaj notatkę</Text></Pressable>
-            {notes.map(note => <NoteRef {...note} key={note.title + note.image} />)}
-        </ScrollView>
+        <View style={tw('p-6 bg-white')}>
+            <Pressable onPress={() => navigation.navigate('AddNote')}><Text style={{ fontFamily: 'Bold', ...tw('text-lg')}}>Dodaj notatkę</Text></Pressable>
+            <NoteFilter filter={filter} setFilter={setFilter} />
+            <ScrollView>
+                {!loading ? notes.map(note => <NoteRef {...note} key={note.title + note.image} />) : <Loader />}
+            </ScrollView>
+        </View>
+    )
+}
+
+const NoteFilter = ({ filter, setFilter }: { filter: Filter, setFilter: any }) => {
+    const [categories, setCategories] = useState<CategoryProps[]>([])
+    const tw = useTailwind()
+    
+    useEffect(() => {
+        axios.get(`${BASE_URL}/api/flashcards/categories`)
+            .then(res => res.data)
+            .then(data => setCategories(data))
+    }, [])
+
+    if(categories.length === 0) return <Loader />
+
+    const CategoryButton = ({ category }: { category: CategoryProps }) => (
+        <Pressable style={tw(`py-1 px-4 rounded-xl mr-1 ${category.name === filter.category ? 'bg-primary' : 'bg-white'}`)} onPress={() => setFilter((prev: Filter) => ({ ...prev, category: category.name}))}>
+            <Text style={{ fontFamily: 'Bold', ...tw(`text-lg ${category.name === filter.category ? 'text-white' : 'text-fontLight'}`) }}>{category.name}</Text>
+        </Pressable>
+    )
+
+    return (
+        <View style={tw('my-6')}>
+            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={tw('flex-row')}>
+                <Pressable style={tw(`py-1 px-4 rounded-xl mr-2 ${filter.category === 'Wszystkie' ? 'bg-primary' : 'bg-white'}`)} onPress={() => setFilter((prev: Filter) => ({ ...prev, category: 'Wszystkie'}))}>
+                    <Text style={{ fontFamily: 'Bold', ...tw(`text-lg ${filter.category === 'Wszystkie' ? 'text-white' : 'text-fontLight'}`) }}>Wszystkie</Text>
+                </Pressable>
+                {categories.map(category => <CategoryButton category={category} key={category.name} /> )}
+            </ScrollView>
+        </View>
     )
 }
 

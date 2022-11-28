@@ -6,7 +6,6 @@ import { NavigationProp, useNavigation } from '@react-navigation/native'
 import { BASE_URL } from '../../constants/baseUrl'
 import Loader from '../Loader'
 import { CategoryStackParams } from '../../screens/FlashCardsScreen'
-import styles from '../../constants/styles'
 
 type CategoryNavigationProps = NavigationProp<CategoryStackParams, 'CategoryList'>
 
@@ -37,7 +36,7 @@ const Category = (props: CategoryProps) => {
     const tw = useTailwind()
     return (
         <TouchableOpacity style={tw('bg-white mb-8 border-stroke border-[2px] rounded-xl overflow-hidden')} onPress={() => navigation.navigate('TopicList', { category: props })}>
-            <Image style={styles.imageCover} source={{
+            <Image style={tw('h-24')} source={{
                 uri: props.image
             }} />
             <Text style={{ fontFamily: 'SemiBold', ...tw('my-2 ml-4 text-xl')}}>{props.name}</Text>
