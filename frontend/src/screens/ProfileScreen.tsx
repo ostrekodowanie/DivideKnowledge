@@ -2,7 +2,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Pressable, Text, View } from "react-native";
 import { useTailwind } from "tailwind-rn/dist";
 import { useAppSelector } from "../hooks/useAppSelector";
-import AdminPanel from "../components/profile/AdminPanel";
 import { logout } from "../../reducers/login";
 import { useDispatch } from "react-redux";
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -16,14 +15,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export type ProfileStackParams = {
     ProfileStack: undefined,
     OwnFlashCards: undefined,
-    FlashLists: undefined,
-    AdminPanel?: undefined
+    FlashLists: undefined
 }
 
 const ProfileStack = createNativeStackNavigator<ProfileStackParams>()
 
 export default function ProfileScreen() {
-    const { is_staff } = useAppSelector(state => state.login.user)
     return (
         <ProfileStack.Navigator initialRouteName="ProfileStack" screenOptions={{
             headerTitleStyle: { fontFamily: 'Bold' }
@@ -38,9 +35,6 @@ export default function ProfileScreen() {
             <ProfileStack.Screen name="FlashLists" component={FlashLists} options={{
                 title: 'FiszkoListy'
             }} />
-            {is_staff && <ProfileStack.Screen name="AdminPanel" component={AdminPanel} options={{
-                title: 'Panel administracyjny'
-            }} />}
         </ProfileStack.Navigator>
     )
 }
@@ -51,7 +45,7 @@ const Profile = ({ navigation }: { navigation: ProfileNavigation}) => {
     const tw = useTailwind()
     const dispatch = useDispatch()
     const user = useAppSelector(state => state.login)
-    const { username, is_staff } = user.user
+    const { username } = user.user
     const { refresh } = user.tokens
 
     const handleLogout = async () => {
@@ -61,9 +55,8 @@ const Profile = ({ navigation }: { navigation: ProfileNavigation}) => {
     }
 
     return (
-        <SafeAreaView style={tw('p-4')}>
-            <Text style={tw('font-medium mb-4 text-2xl')}>Witaj <Text style={tw('text-primary')}>{username}!</Text></Text>
-            {is_staff && <Pressable onPress={() => navigation.navigate('AdminPanel')} style={tw('bg-blue-400 py-3 px-6 my-2')}><Text style={tw('text-white font-medium')}>Admin Panel</Text></Pressable>}
+        <SafeAreaView style={tw('p-6 flex-1 bg-[#FCFCFC]')}>
+            <Text style={{ fontFamily: 'Bold', ...tw('mb-4 text-2xl')}}>Witaj <Text style={tw('text-primary')}>{username}!</Text></Text>
             <Pressable onPress={() => navigation.navigate('OwnFlashCards')} style={tw('bg-blue-400 py-3 px-6 my-2')}><Text style={tw('text-white font-medium')}>Dodane fiszki</Text></Pressable>
             <Pressable onPress={() => navigation.navigate('FlashLists')} style={tw('bg-blue-400 py-3 px-6 my-2')}><Text style={tw('text-white font-medium')}>FiszkoListy</Text></Pressable>
             <Pressable onPress={handleLogout}><Text style={tw('text-red-400 mt-4 font-medium')}>Wyloguj</Text></Pressable>

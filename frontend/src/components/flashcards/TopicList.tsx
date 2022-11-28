@@ -32,7 +32,7 @@ export default function TopicList({ navigation, route }: { navigation: TopicList
     }, [])
 
     return (
-        <ScrollView style={tw('p-4')}>
+        <ScrollView style={tw('p-6 bg-white')}>
             <Pressable onPress={() => navigation.navigate('AddCard')}><Text style={tw('text-blue-400 font-medium mb-4 text-[1rem]')}>Dodaj fiszkę</Text></Pressable>
             {topics.length > 0 ? topics.map(topic => <Topic {...topic} category={category} key={topic.name} />) : <Loader />}
         </ScrollView>
@@ -45,11 +45,11 @@ const Topic = (props: TopicRefProps) => {
     const { category } = props
 
     return (
-        <TouchableOpacity style={tw('bg-white mb-8 rounded overflow-hidden')} onPress={() => navigation.navigate('FlashCardsGenerator', {topic: props, category })}>
+        <TouchableOpacity style={tw('bg-white mb-8 border-stroke border-[2px] rounded-xl overflow-hidden')} onPress={() => navigation.navigate('FlashCardsGenerator', {topic: props, category })}>
             <Image style={styles.imageCover} source={{
                 uri: props.image
             }} />
-            <Text style={tw('my-2 ml-4 font-medium text-xl')}>{props.name}</Text>
+            <Text style={{fontFamily: 'Bold', ...tw('my-2 ml-4 font-medium text-xl')}}>{props.name}</Text>
         </TouchableOpacity>
     )
 }
