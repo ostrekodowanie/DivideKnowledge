@@ -33,6 +33,7 @@ class NotesLikes(models.Model):
 
     class Meta:
         verbose_name_plural = 'Notes Likes'
+        unique_together = [['user', 'note']]
 
     def __str__(self):
         return '{} | {} | {}'.format(

@@ -71,13 +71,14 @@ export default function AddNote() {
         form.append('desc', newNote.desc)
         // @ts-ignore
         form.append('image', newNote.image)
-        form.append('category_id', String(newNote.category.id))
+        form.append('category', String(newNote.category.id))
 
         try {
             const response = await axios.postForm(`${BASE_URL}/api/notes/create`, form)
             if(response.status === (201 || 200)) return setStatus(true)
         } catch(err: any) {
-            return setStatus("Nie ma takiej kategorii!")
+            setStatus("Nie ma takiej kategorii!")
+            return console.log(err.response)
         }
     }
 
@@ -87,8 +88,7 @@ export default function AddNote() {
     }
 
     if(status === 'loading') return <Loader />
-    if(status && typeof status === 'string') alert(status)
-
+    
     return (
         <ScrollView style={tw('p-6 relative')}>
             <TouchableOpacity onPress={pickImage}><Text style={{fontFamily: 'SemiBold', ...tw('text-blue-400 text-lg mb-4 mx-auto')}}>Wybierz zdjęcie</Text></TouchableOpacity>
@@ -98,13 +98,15 @@ export default function AddNote() {
             <PrimaryInput field="title" value={newNote.title} setState={setNewNote} label='Tytuł' />
             <PrimaryInput field="desc" value={newNote.desc} setState={setNewNote} label='Opis' />
             {categories.length > 0 ? <SelectDropdown 
-                data={categories.map(item => item.name)}
+                data={categories.map(item => item)}
                 buttonStyle={tw(`w-full px-6 items-center mb-6 border-stroke border-[2px] rounded-2xl bg-white`)}
                 dropdownStyle={tw('rounded-2xl bg-white')}
+                defaultButtonText='Kategoria'
                 onSelect={item => setNewNote(prev => ({ ...prev, category: item}))}
-                buttonTextAfterSelection={text => text}
-                rowTextForSelection={text => text}
+                buttonTextAfterSelection={item => item.name}
+                rowTextForSelection={item => item.name}
             /> : <Loader />}
+            {status && typeof status === 'string' && <Text style={{ fontFamily: 'SemiBold', ...tw('text-red-400')}}>{status}</Text>}
             <PrimaryButton onPress={handleSubmit} style={'my-8'} text='Zatwierdź' />
             <Modal style={tw('mx-auto')} visible={status === true} animationType='fade'>
                 <View style={tw('px-6 py-4 flex-1 bg-white rounded-xl items-center justify-center ')}>

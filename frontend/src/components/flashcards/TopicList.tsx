@@ -29,7 +29,7 @@ export default function TopicList({ navigation, route }: { navigation: TopicList
             .then(res => res.data)
             .then(data => setTopics(data))
             .catch(err => alert(err))
-    }, [])
+    }, [route])
 
     return (
         <ScrollView style={tw('p-6 bg-white')}>

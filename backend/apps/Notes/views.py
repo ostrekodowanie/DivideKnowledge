@@ -29,8 +29,10 @@ class NotesListView(generics.ListAPIView):
     serializer_class = NotesSerializer
     def get_queryset(self):
         c = self.request.GET.get('c')
-        notes = Notes.objects.filter(is_verified=True).filter(category__name=c).annotate(ids=Count('noteslikes__id')).order_by('-ids')
-        return notes
+        if c:
+            notes = Notes.objects.filter(is_verified=True).filter(category__name=c).annotate(ids=Count('noteslikes__id')).order_by('-ids')
+            return notes
+        return Notes.objects.filter(is_verified=True).annotate(ids=Count('noteslikes__id')).order_by('-ids')
 
 class NoteLikeView(generics.CreateAPIView):
     queryset = NotesLikes.objects.all()

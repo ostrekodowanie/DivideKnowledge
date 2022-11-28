@@ -1,4 +1,4 @@
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation, useRoute } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
@@ -38,6 +38,7 @@ interface Filter {
 
 const NoteList = () => {
     const navigation = useNavigation<NoteRefNavigationProp>()
+    const route = useRoute()
     const tw = useTailwind()
     const [loading, setLoading] = useState(true)
     const [notes, setNotes] = useState<NoteProps[]>([])
@@ -47,11 +48,11 @@ const NoteList = () => {
 
     useEffect(() => {
         setLoading(true)
-        axios.get(`${BASE_URL}/api/notes${filter.category && '?c=' + filter.category}`)
+        axios.get(`${BASE_URL}/api/notes${filter.category ? '?c=' + filter.category : ''}`)
             .then(res => res.data)
             .then(data => setNotes(data))
             .finally(() => setLoading(false))
-    }, [filter])
+    }, [filter, route])
 
     return (
         <View style={tw('p-6 flex-1 bg-white')}>
@@ -83,7 +84,7 @@ const NoteFilter = ({ filter, setFilter }: { filter: Filter, setFilter: any }) =
     )
 
     return (
-        <View style={tw('my-6 flex-1')}>
+        <View style={tw('my-6')}>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={tw('flex-row')}>
                 <Pressable style={tw(`py-1 px-4 rounded-xl mr-2 ${filter.category === 'Wszystkie' ? 'bg-primary' : 'bg-white'}`)} onPress={() => setFilter((prev: Filter) => ({ ...prev, category: 'Wszystkie'}))}>
                     <Text style={{ fontFamily: 'Bold', ...tw(`text-lg ${filter.category === 'Wszystkie' ? 'text-white' : 'text-fontLight'}`) }}>Wszystkie</Text>
