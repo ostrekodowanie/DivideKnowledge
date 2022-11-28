@@ -1,6 +1,6 @@
 import { Image, Modal, Text, TouchableOpacity, View } from "react-native";
 import { NoteProps } from "./Note";
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTailwind } from "tailwind-rn/dist";
 import PrimaryInput from "../PrimaryInput";
 import * as ImagePicker from 'expo-image-picker'
@@ -10,15 +10,18 @@ import axios from "axios";
 import { BASE_URL } from "../../constants/baseUrl";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import Loader from "../Loader";
+import { CategoryProps } from "../flashcards/CategoryList";
+import SelectDropdown from "react-native-select-dropdown";
 
-type N = Omit<NoteProps, 'image' | 'likes' | 'id'>
+type N = Omit<NoteProps, 'image' | 'likes' | 'id' | 'category'>
 
 type AddedNoteProps = N & {
     image: {
         uri: string,
         name: string,
         type: string
-    }
+    },
+    category: Omit<CategoryProps, 'image'>
 }
 
 export default function AddNote() {
@@ -26,6 +29,13 @@ export default function AddNote() {
     const { id } = useAppSelector(state => state.login.user)
     const [status, setStatus] = useState<string | boolean>('')
     const [newNote, setNewNote] = useState<AddedNoteProps>(initialNote)
+    const [categories, setCategories] = useState<CategoryProps[]>([])
+
+    useEffect(() => {
+        axios.get(`${BASE_URL}/api/notes/categories`)
+            .then(res => res.data)
+            .then(data => setCategories(data))
+    }, [])
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -61,7 +71,7 @@ export default function AddNote() {
         form.append('desc', newNote.desc)
         // @ts-ignore
         form.append('image', newNote.image)
-        form.append('category', newNote.category)
+        form.append('category_id', String(newNote.category.id))
 
         try {
             const response = await axios.postForm(`${BASE_URL}/api/notes/create`, form)
@@ -87,7 +97,19 @@ export default function AddNote() {
             }} />}
             <PrimaryInput field="title" value={newNote.title} setState={setNewNote} label='Tytuł' />
             <PrimaryInput field="desc" value={newNote.desc} setState={setNewNote} label='Opis' />
-            <PrimaryInput field="category" value={newNote.category} setState={setNewNote} label='Kategoria' />
+            <PrimaryInput field="category" value={newNote.category.name} setState={setNewNote} label='Kategoria' />
+            {categories.length > 0 ? <SelectDropdown 
+                data={categories.map(item => item.name)}
+                renderCustomizedButtonChild={(sel: CategoryProps) => <View style={tw('items-center')}>
+                    <Text style={{fontFamily: 'Bold', ...tw('text-lg')}}>Kategoria pytania</Text>
+                    {sel && <Text style={{ fontFamily: 'Bold', ...tw('text-primary')}}>{sel.name}</Text>}
+                </View>}
+                buttonStyle={tw(`w-full px-6 items-center mb-6 border-stroke border-[2px] rounded-2xl bg-white`)}
+                dropdownStyle={tw('rounded-2xl bg-white')}
+                onSelect={item => setNewNote(prev => ({ ...prev, category: item}))}
+                buttonTextAfterSelection={text => text}
+                rowTextForSelection={text => text}
+            /> : <Loader />}
             <PrimaryButton onPress={handleSubmit} style={'my-8'} text='Zatwierdź' />
             <Modal style={tw('mx-auto')} visible={status === true} animationType='fade'>
                 <View style={tw('px-6 py-4 flex-1 bg-white rounded-xl items-center justify-center ')}>
@@ -109,5 +131,8 @@ const initialNote: AddedNoteProps = {
         name: '',
         type: ''
     },
-    category: ''
+    category: {
+        id: -1,
+        name: '',
+    }
 }

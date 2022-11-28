@@ -28,7 +28,7 @@ export default function Note({ route }: { route: NoteRouteProp}) {
     const note_id = route.params.id
  
     const handleAdd = async () => {
-        const resp = await axios.post(`${BASE_URL}/api/notes/favourites/add`, JSON.stringify({ user_id: id, note_id }), {
+        const resp = await axios.post(`${BASE_URL}/api/notes/like/add`, JSON.stringify({ user_id: id, note_id }), {
             headers: { 'Content-Type': 'application/json' }
         })
         if(resp.status === 200) return setSaved(true)

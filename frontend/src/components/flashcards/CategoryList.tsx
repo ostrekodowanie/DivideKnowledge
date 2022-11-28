@@ -10,6 +10,7 @@ import { CategoryStackParams } from '../../screens/FlashCardsScreen'
 type CategoryNavigationProps = NavigationProp<CategoryStackParams, 'CategoryList'>
 
 export interface CategoryProps {
+    id: number,
     name: string,
     image: string
 }

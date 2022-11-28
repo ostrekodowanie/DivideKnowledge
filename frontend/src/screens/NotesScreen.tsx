@@ -1,8 +1,8 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import axios from 'axios';
-import React, { SetStateAction, useEffect, useState } from 'react'
-import { FlatList, Image, Pressable, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useState } from 'react'
+import { Image, Pressable, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useTailwind } from 'tailwind-rn';
 import { CategoryProps } from '../components/flashcards/CategoryList';
 import Loader from '../components/Loader';
@@ -54,7 +54,7 @@ const NoteList = () => {
     }, [filter])
 
     return (
-        <View style={tw('p-6 bg-white')}>
+        <View style={tw('p-6 flex-1 bg-white')}>
             <Pressable onPress={() => navigation.navigate('AddNote')}><Text style={{ fontFamily: 'Bold', ...tw('text-lg')}}>Dodaj notatkę</Text></Pressable>
             <NoteFilter filter={filter} setFilter={setFilter} />
             <ScrollView>
@@ -69,7 +69,7 @@ const NoteFilter = ({ filter, setFilter }: { filter: Filter, setFilter: any }) =
     const tw = useTailwind()
     
     useEffect(() => {
-        axios.get(`${BASE_URL}/api/flashcards/categories`)
+        axios.get(`${BASE_URL}/api/notes/categories`)
             .then(res => res.data)
             .then(data => setCategories(data))
     }, [])
@@ -83,7 +83,7 @@ const NoteFilter = ({ filter, setFilter }: { filter: Filter, setFilter: any }) =
     )
 
     return (
-        <View style={tw('my-6')}>
+        <View style={tw('my-6 flex-1')}>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={tw('flex-row')}>
                 <Pressable style={tw(`py-1 px-4 rounded-xl mr-2 ${filter.category === 'Wszystkie' ? 'bg-primary' : 'bg-white'}`)} onPress={() => setFilter((prev: Filter) => ({ ...prev, category: 'Wszystkie'}))}>
                     <Text style={{ fontFamily: 'Bold', ...tw(`text-lg ${filter.category === 'Wszystkie' ? 'text-white' : 'text-fontLight'}`) }}>Wszystkie</Text>
