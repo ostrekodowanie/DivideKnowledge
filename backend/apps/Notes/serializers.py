@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Notes, Categories, User
+from .models import Notes, Categories, User, NotesLikes
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,7 +14,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class NotesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notes
-        fields = ['user', 'title', 'desc', 'image', 'category']
+        fields = ['id', 'user', 'title', 'desc', 'image', 'category']
 
 class NotesCategoriesSerializer(serializers.ModelSerializer):
     class Meta:
@@ -23,7 +23,7 @@ class NotesCategoriesSerializer(serializers.ModelSerializer):
         
 class NoteLikeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Notes
+        model = NotesLikes
         fields = ['user', 'note']
 
 
