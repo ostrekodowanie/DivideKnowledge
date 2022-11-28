@@ -12,17 +12,13 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['name']
 
 class NotesSerializer(serializers.ModelSerializer):
-    user = serializers.CharField()
-    category = serializers.CharField()
     class Meta:
         model = Notes
         fields = ['user', 'title', 'desc', 'image', 'category']
-
-    def create(self, validated_data):
-        user = validated_data.pop('user')
-        category = validated_data.pop('category')
-        note = Notes.objects.create(user_id=user, category=Categories.objects.get(name=category), **validated_data)
-        return note
         
+class NoteLikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notes
+        fields = ['user', 'note']
 
 

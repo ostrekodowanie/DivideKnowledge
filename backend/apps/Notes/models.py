@@ -17,7 +17,26 @@ class Notes(models.Model):
         verbose_name_plural = 'Notes'
 
     def __str__(self):
-        return '{} - {}'.format(
+        return '{} | {}'.format(
             self.pk,
             self.title,
         )
+
+class NotesLikes(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE)
+    note = models.ForeignKey(
+        Notes, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = 'Notes Likes'
+
+    def __str__(self):
+        return '{} | {} | {}'.format(
+            self.pk,
+            self.user,
+            self.note,
+        )
+    

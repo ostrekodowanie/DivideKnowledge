@@ -15,7 +15,7 @@ class FlashcardsSerializer(serializers.ModelSerializer):
 class FlashcardsCategoriesListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categories
-        fields = ['name', 'image']
+        fields = ['id', 'name', 'image']
 
 class TopicsSerializer(serializers.ModelSerializer):
     class Meta:
