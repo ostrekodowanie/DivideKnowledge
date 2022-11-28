@@ -14,7 +14,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class NotesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notes
-        fields = ['user', 'title', 'desc', 'image', 'category']
+        fields = ['id', 'user', 'title', 'desc', 'image', 'category']
 
 class NotesCategoriesSerializer(serializers.ModelSerializer):
     class Meta:
