@@ -1,4 +1,4 @@
-import { Image, Modal, Text, TouchableOpacity, View } from "react-native";
+import { Image, Modal, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { NoteProps } from "./Note";
 import { useEffect, useState } from 'react'
 import { useTailwind } from "tailwind-rn/dist";
@@ -90,20 +90,15 @@ export default function AddNote() {
     if(status && typeof status === 'string') alert(status)
 
     return (
-        <View style={tw('p-6 flex-1 relative')}>
+        <ScrollView style={tw('p-6 relative')}>
             <TouchableOpacity onPress={pickImage}><Text style={{fontFamily: 'SemiBold', ...tw('text-blue-400 text-lg mb-4 mx-auto')}}>Wybierz zdjęcie</Text></TouchableOpacity>
             {newNote.image.uri && <Image style={{...styles.imageContain, ...tw('w-full h-[10rem]')}} source={{
                 uri: newNote.image.uri
             }} />}
             <PrimaryInput field="title" value={newNote.title} setState={setNewNote} label='Tytuł' />
             <PrimaryInput field="desc" value={newNote.desc} setState={setNewNote} label='Opis' />
-            <PrimaryInput field="category" value={newNote.category.name} setState={setNewNote} label='Kategoria' />
             {categories.length > 0 ? <SelectDropdown 
                 data={categories.map(item => item.name)}
-                renderCustomizedButtonChild={(sel: CategoryProps) => <View style={tw('items-center')}>
-                    <Text style={{fontFamily: 'Bold', ...tw('text-lg')}}>Kategoria pytania</Text>
-                    {sel && <Text style={{ fontFamily: 'Bold', ...tw('text-primary')}}>{sel.name}</Text>}
-                </View>}
                 buttonStyle={tw(`w-full px-6 items-center mb-6 border-stroke border-[2px] rounded-2xl bg-white`)}
                 dropdownStyle={tw('rounded-2xl bg-white')}
                 onSelect={item => setNewNote(prev => ({ ...prev, category: item}))}
@@ -119,7 +114,7 @@ export default function AddNote() {
                     <TouchableOpacity onPress={handleReset}><Text style={{fontFamily: 'Bold', ...tw('text-primary mt-4 text-lg')}}>Dodaj kolejną notatkę</Text></TouchableOpacity>
                 </View>
             </Modal>
-        </View>
+        </ScrollView>
     )
 }
 
