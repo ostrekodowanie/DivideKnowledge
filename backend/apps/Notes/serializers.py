@@ -19,9 +19,11 @@ class NotesSerializer(serializers.ModelSerializer):
         fields = ['user', 'title', 'desc', 'image', 'category']
 
     def create(self, validated_data):
+        print(validated_data)
         user = validated_data.pop('user')
         category = validated_data.pop('category')
         note = Notes.objects.create(user_id=user, category=Categories.objects.get(name=category), **validated_data)
+        print(note)
         return note
         
 

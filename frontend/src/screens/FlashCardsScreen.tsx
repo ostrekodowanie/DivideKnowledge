@@ -19,11 +19,11 @@ const CategoryStack = createNativeStackNavigator<CategoryStackParams>()
 
 export default function FlashCardsScreen() {
     return (
-        <CategoryStack.Navigator initialRouteName='CategoryList' screenOptions={{ 
-            headerShown: false,
+        <CategoryStack.Navigator initialRouteName='CategoryList' screenOptions={{
+            headerTitleStyle: { fontFamily: 'Bold'}
         }}>
             <CategoryStack.Screen name='CategoryList' component={CategoryList} options={{ title: 'Wybierz kategorię' }} />
-            <CategoryStack.Screen name='AddCard' component={AddCard} options={{ title: 'Dodaj fiszkę' }} />
+            <CategoryStack.Screen name='AddCard' component={AddCard} options={{ title: 'Dodaj fiszkę', headerShown: false }} />
             <CategoryStack.Screen name='TopicList' component={TopicList} options={{ title: 'Wybierz temat'}} />
             <CategoryStack.Screen name='FlashCardsGenerator' component={FlashCardsGenerator} options={{ 
                 title: 'Fiszki'
