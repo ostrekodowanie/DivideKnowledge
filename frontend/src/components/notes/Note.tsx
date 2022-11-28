@@ -25,10 +25,10 @@ export default function Note({ route }: { route: NoteRouteProp}) {
     const [saved, setSaved] = useState(false)
     const { id } = useAppSelector(state => state.login.user)
     const { title, desc, image } = route.params
-    const note_id = route.params.id
+    const note = route.params.id
  
     const handleAdd = async () => {
-        const resp = await axios.post(`${BASE_URL}/api/notes/like/add`, JSON.stringify({ user_id: id, note_id }), {
+        const resp = await axios.post(`${BASE_URL}/api/notes/like/add`, JSON.stringify({ user: id, note }), {
             headers: { 'Content-Type': 'application/json' }
         })
         if(resp.status === 200) return setSaved(true)
@@ -41,7 +41,7 @@ export default function Note({ route }: { route: NoteRouteProp}) {
             }} />
             <Text style={{fontFamily: 'Bold', ...tw('text-xl')}}>{title}</Text>
             <Text style={{fontFamily:'Medium', ...tw('text-fontLight')}}>{desc}</Text>
-            {saved ? <PrimaryButton style="mt-auto w-full" text="Zapisz" onPress={handleAdd} /> : <PrimaryButton style="mt-auto w-full" text="Zapisano" onPress={() => {}} />}
+            {!saved ? <PrimaryButton style="mt-auto w-full" text="Polub" onPress={handleAdd} /> : <Text style={{fontFamily: 'Bold', ...tw('text-lg mt-auto mx-auto')}}>Lubisz to</Text>}
         </View>
     )
 }

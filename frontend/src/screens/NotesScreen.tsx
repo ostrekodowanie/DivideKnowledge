@@ -48,7 +48,8 @@ const NoteList = () => {
 
     useEffect(() => {
         setLoading(true)
-        axios.get(`${BASE_URL}/api/notes${filter.category ? '?c=' + filter.category : ''}`)
+        let categoryStr = filter.category !== 'Wszystkie' ? '?c=' + filter.category : ''
+        axios.get(`${BASE_URL}/api/notes${categoryStr}`)
             .then(res => res.data)
             .then(data => setNotes(data))
             .finally(() => setLoading(false))
