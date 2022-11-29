@@ -13,7 +13,7 @@ import Loader from "../Loader";
 import { CategoryProps } from "../flashcards/CategoryList";
 import SelectDropdown from "react-native-select-dropdown";
 
-type N = Omit<NoteProps, 'image' | 'likes' | 'id' | 'category'>
+type N = Omit<NoteProps, 'image' | 'likes' | 'id' | 'category' | 'is_liked'>
 
 type AddedNoteProps = N & {
     image: {

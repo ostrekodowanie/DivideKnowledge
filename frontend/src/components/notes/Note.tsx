@@ -15,23 +15,24 @@ export interface NoteProps {
     desc: string,
     image: string,
     category: string,
-    likes: number
+    likes: number,
+    is_liked: boolean
 }
 
 type NoteRouteProp = RouteProp<NoteStackParams, 'Note'>
 
 export default function Note({ route }: { route: NoteRouteProp}) {
     const tw = useTailwind()
-    const [saved, setSaved] = useState(false)
+    const { title, desc, image, is_liked } = route.params
+    const [liked, setLiked] = useState(is_liked)
     const { id } = useAppSelector(state => state.login.user)
-    const { title, desc, image } = route.params
     const note = route.params.id
  
     const handleAdd = async () => {
         const resp = await axios.post(`${BASE_URL}/api/notes/like/add`, JSON.stringify({ user: id, note }), {
             headers: { 'Content-Type': 'application/json' }
         })
-        if(resp.status === 200) return setSaved(true)
+        if(resp.status === 201) return setLiked(true)
     }
 
     return (
@@ -41,7 +42,7 @@ export default function Note({ route }: { route: NoteRouteProp}) {
             }} />
             <Text style={{fontFamily: 'Bold', ...tw('text-xl')}}>{title}</Text>
             <Text style={{fontFamily:'Medium', ...tw('text-fontLight')}}>{desc}</Text>
-            {!saved ? <PrimaryButton style="mt-auto w-full" text="Polub" onPress={handleAdd} /> : <Text style={{fontFamily: 'Bold', ...tw('text-lg mt-auto mx-auto')}}>Lubisz to</Text>}
+            {!liked ? <PrimaryButton style="mt-auto w-full" text="Polub" onPress={handleAdd} /> : <Text style={{fontFamily: 'Bold', ...tw('text-lg mt-auto mx-auto')}}>Lubisz to</Text>}
         </View>
     )
 }

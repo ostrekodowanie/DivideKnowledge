@@ -9,6 +9,7 @@ import Loader from '../components/Loader';
 import AddNote from '../components/notes/AddNote';
 import Note, { NoteProps } from '../components/notes/Note';
 import { BASE_URL } from '../constants/baseUrl';
+import { useAppSelector } from '../hooks/useAppSelector';
 
 export type NoteStackParams = {
     NoteList: undefined,
@@ -23,7 +24,9 @@ export default function NotesScreen() {
         <NoteStack.Navigator initialRouteName='NoteList' screenOptions={{
             headerTitleStyle: { fontFamily: 'Bold' }
         }}>
-            <NoteStack.Screen name='NoteList' component={NoteList} options={{ title: 'Popularne notatki' }} />
+            <NoteStack.Screen name='NoteList' component={NoteList} options={{ 
+                title: 'Popularne notatki'
+            }} />
             <NoteStack.Screen name='Note' component={Note} options={{ title: 'Notatka' }} />
             <NoteStack.Screen name='AddNote' component={AddNote} options={{ title: 'Dodaj notatkę' }} />
         </NoteStack.Navigator>
@@ -40,6 +43,9 @@ const NoteList = () => {
     const navigation = useNavigation<NoteRefNavigationProp>()
     const route = useRoute()
     const tw = useTailwind()
+    const auth = useAppSelector(state => state.login)
+    const { access } = auth.tokens
+    const { id } = auth.user
     const [loading, setLoading] = useState(true)
     const [notes, setNotes] = useState<NoteProps[]>([])
     const [filter, setFilter] = useState<Filter>({
@@ -48,11 +54,14 @@ const NoteList = () => {
 
     useEffect(() => {
         setLoading(true)
-        let categoryStr = filter.category !== 'Wszystkie' ? '?c=' + filter.category : ''
-        axios.get(`${BASE_URL}/api/notes${categoryStr}`)
-            .then(res => res.data)
-            .then(data => setNotes(data))
-            .finally(() => setLoading(false))
+        let categoryStr: string = filter.category !== 'Wszystkie' ? '&?c=' + filter.category : ''
+        axios.get(`${BASE_URL}/api/notes?u=${id + categoryStr}`, {
+            headers: {
+                'Authorization': 'Bearer ' + access
+            }
+        }).then(res => res.data)
+        .then(data => setNotes(data))
+        .finally(() => setLoading(false))
     }, [filter, route])
 
     return (
@@ -60,7 +69,7 @@ const NoteList = () => {
             <Pressable onPress={() => navigation.navigate('AddNote')}><Text style={{ fontFamily: 'Bold', ...tw('text-lg')}}>Dodaj notatkę</Text></Pressable>
             <NoteFilter filter={filter} setFilter={setFilter} />
             <ScrollView>
-                {!loading ? notes.map(note => <NoteRef {...note} key={note.title + note.image} />) : <Loader />}
+                {!loading ? notes.map(note => <NoteRef {...note} key={note.id} />) : <Loader />}
             </ScrollView>
         </View>
     )
