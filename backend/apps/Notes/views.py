@@ -2,6 +2,8 @@ from rest_framework import generics
 from .models import Notes, NotesLikes
 from .serializers import *
 
+from rest_framework import status
+from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser
 
@@ -24,7 +26,7 @@ class NotesCategoriesView(generics.ListAPIView):
 
 class NotesListView(generics.ListAPIView):
     serializer_class = NotesSerializer
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
     def get_queryset(self):
         u = self.request.GET.get('u')
         c = self.request.GET.get('c')
@@ -43,9 +45,10 @@ class NoteLikeView(generics.CreateAPIView):
 
 class RemoveNoteLikeView(generics.DestroyAPIView):
     serializer_class = NoteLikeSerializer
-    lookup_url_kwarg = 'u'
-    def get_queryset(self, *args, **kwargs):
+    def destroy(self, request, *args, **kwargs):
         user = self.kwargs['u']
         note = self.kwargs['n']
-        return NotesLikes.objects.filter(Q(user=user) & Q(note=note))
+        unlike = NotesLikes.objects.filter(Q(user=user) & Q(note=note))
+        unlike.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
