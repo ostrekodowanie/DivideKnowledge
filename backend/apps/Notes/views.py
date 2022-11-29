@@ -2,12 +2,10 @@ from rest_framework import generics
 from .models import Notes, NotesLikes
 from .serializers import *
 
-from rest_framework import status
-from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser
 
-from django.db.models import Count
+from django.db.models import Count, Exists
 
 class NoteCreateView(generics.CreateAPIView):
     parser_classes = (MultiPartParser, FormParser)
@@ -16,7 +14,6 @@ class NoteCreateView(generics.CreateAPIView):
 class UserNotesView(generics.ListAPIView):
     serializer_class = NotesSerializer
     permission_classes = [IsAuthenticated]
-
     def get_queryset(self):
         user = self.kwargs['pk']
         return Notes.objects.filter(user=user)
@@ -27,12 +24,14 @@ class NotesCategoriesView(generics.ListAPIView):
 
 class NotesListView(generics.ListAPIView):
     serializer_class = NotesSerializer
+    permission_classes = [IsAuthenticated]
     def get_queryset(self):
+        u = self.request.GET.get('u')
         c = self.request.GET.get('c')
         if c:
-            notes = Notes.objects.filter(is_verified=True).filter(category__name=c).annotate(ids=Count('noteslikes__id')).order_by('-ids')
+            notes = Notes.objects.filter(is_verified=True).filter(category__name=c).annotate(is_liked=Exists(NotesLikes.objects.filter(user=u))).annotate(ids=Count('noteslikes__id')).order_by('-ids')
             return notes
-        return Notes.objects.filter(is_verified=True).annotate(ids=Count('noteslikes__id')).order_by('-ids')
+        return Notes.objects.filter(is_verified=True).annotate(is_liked=Exists(NotesLikes.objects.filter(user=u))).annotate(ids=Count('noteslikes__id')).order_by('-ids')
 
 class NoteLikeView(generics.CreateAPIView):
     queryset = NotesLikes.objects.all()

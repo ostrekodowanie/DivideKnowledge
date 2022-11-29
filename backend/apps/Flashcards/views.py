@@ -6,8 +6,7 @@ from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from django.db.models import Count
-from django.db.models import Q
+from django.db.models import Count, Q
 
 class UserFlashcardsView(generics.ListAPIView):
     serializer_class = FlashcardsSerializer

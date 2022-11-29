@@ -27,7 +27,7 @@ class NotesLikes(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE)
     note = models.ForeignKey(
-        Notes, on_delete=models.CASCADE)
+        Notes, on_delete=models.CASCADE, related_name='noteslikes')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

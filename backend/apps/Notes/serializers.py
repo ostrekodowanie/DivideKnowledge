@@ -12,9 +12,15 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['name']
 
 class NotesSerializer(serializers.ModelSerializer):
+    is_liked = serializers.BooleanField(read_only=True)
+    likes = serializers.SerializerMethodField()
+
+    def get_likes(self, ob):
+        return ob.noteslikes.count()
+        
     class Meta:
         model = Notes
-        fields = ['id', 'user', 'title', 'desc', 'image', 'category']
+        fields = ['id', 'user', 'title', 'desc', 'image', 'category', 'likes', 'is_liked']
 
 class NotesCategoriesSerializer(serializers.ModelSerializer):
     class Meta:
