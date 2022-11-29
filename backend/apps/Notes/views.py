@@ -42,6 +42,10 @@ class NoteLikeView(generics.CreateAPIView):
     serializer_class = NoteLikeSerializer
 
 class RemoveNoteLikeView(generics.DestroyAPIView):
-    queryset = NotesLikes.objects.all()
     serializer_class = NoteLikeSerializer
+    lookup_url_kwarg = 'u'
+    def get_queryset(self, *args, **kwargs):
+        user = self.kwargs['u']
+        note = self.kwargs['n']
+        return NotesLikes.objects.filter(Q(user=user) & Q(note=note))
 
