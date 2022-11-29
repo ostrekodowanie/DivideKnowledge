@@ -5,7 +5,7 @@ from .serializers import *
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser
 
-from django.db.models import Count, Exists
+from django.db.models import Count, Exists, OuterRef, Q
 
 class NoteCreateView(generics.CreateAPIView):
     parser_classes = (MultiPartParser, FormParser)
@@ -29,9 +29,13 @@ class NotesListView(generics.ListAPIView):
         u = self.request.GET.get('u')
         c = self.request.GET.get('c')
         if c:
-            notes = Notes.objects.filter(is_verified=True).filter(category__name=c).annotate(is_liked=Exists(NotesLikes.objects.filter(user=u))).annotate(ids=Count('noteslikes__id')).order_by('-ids')
+            notes = (Notes.objects
+                .filter(Q(is_verified=True) & Q(category__name=c))
+                .annotate(is_liked=Exists(NotesLikes.objects.filter(user=u)))
+                .annotate(ids=Count('noteslikes__id'))
+                .order_by('-ids'))
             return notes
-        return Notes.objects.filter(is_verified=True).annotate(is_liked=Exists(NotesLikes.objects.filter(user=u))).annotate(ids=Count('noteslikes__id')).order_by('-ids')
+        return Notes.objects.filter(is_verified=True).annotate(is_liked=Exists(NotesLikes.objects.filter(user=u, note_id=OuterRef('pk')))).annotate(ids=Count('noteslikes__id')).order_by('-ids')
 
 class NoteLikeView(generics.CreateAPIView):
     queryset = NotesLikes.objects.all()
