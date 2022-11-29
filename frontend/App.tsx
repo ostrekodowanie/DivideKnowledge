@@ -23,6 +23,7 @@ import { useFonts,
         Dosis_700Bold as Bold,
         Dosis_800ExtraBold as ExtraBold
 } from '@expo-google-fonts/dosis';
+import { View } from 'react-native';
 
 export type RootTabParams = {
   Home: undefined,
@@ -99,7 +100,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <RootTab.Navigator screenOptions={{
+      <RootTab.Navigator sceneContainerStyle={tw('bg-white')} screenOptions={{
         headerTitleStyle: { fontFamily: 'Bold' },
         tabBarActiveTintColor: '#10DC49', 
         tabBarInactiveTintColor: '#3A234E', 

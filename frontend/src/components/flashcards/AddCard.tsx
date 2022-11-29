@@ -102,7 +102,6 @@ const CardForm = ({ navigation }: { navigation: CardFormNavigationProp }) => {
                 onSelect={item => setNewCard((prev: AddedFlashCardProps) => ({ ...prev, category: item }))}
                 buttonTextAfterSelection={text => text}
                 rowTextForSelection={text => text}
-
             />
             <SelectDropdown 
                 data={topics.map(item => item)}

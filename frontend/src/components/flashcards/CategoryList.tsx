@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { TouchableOpacity, Text, Image, Pressable, ScrollView } from 'react-native'
 import { useTailwind } from 'tailwind-rn/dist'
 import axios from 'axios'
-import { NavigationProp, useNavigation } from '@react-navigation/native'
+import { NavigationProp, useNavigation, useRoute } from '@react-navigation/native'
 import { BASE_URL } from '../../constants/baseUrl'
 import Loader from '../Loader'
 import { CategoryStackParams } from '../../screens/FlashCardsScreen'
@@ -10,12 +10,14 @@ import { CategoryStackParams } from '../../screens/FlashCardsScreen'
 type CategoryNavigationProps = NavigationProp<CategoryStackParams, 'CategoryList'>
 
 export interface CategoryProps {
+    id: number,
     name: string,
     image: string
 }
 
 export default function CategoryList({ navigation }: { navigation: CategoryNavigationProps}) {
     const tw = useTailwind()
+    const route = useRoute()
     const [categories, setCategories] = useState<CategoryProps[]>([])
 
     useEffect(() => {
@@ -23,7 +25,7 @@ export default function CategoryList({ navigation }: { navigation: CategoryNavig
             .then(res => res.data)
             .then(data => setCategories(data))
             .catch(err => alert(err))
-    }, [])
+    }, [route])
 
     return <ScrollView style={tw('p-6 bg-white')}>
         <Pressable onPress={() => navigation.navigate('AddCard')}><Text style={tw('text-blue-400 font-medium mb-4 text-[1rem]')}>Dodaj fiszkę</Text></Pressable>
