@@ -32,4 +32,9 @@ class NoteLikeSerializer(serializers.ModelSerializer):
         model = NotesLikes
         fields = ['user', 'note']
 
+class RecentNotesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notes
+        fields = ['title', 'image']
+
 
