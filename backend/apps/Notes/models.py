@@ -8,7 +8,7 @@ class Notes(models.Model):
     category = models.ForeignKey(
         Categories, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
-    desc = models.CharField(max_length=255)
+    desc = models.CharField(max_length=255, null=True, blank=True)
     image = models.ImageField(upload_to='notes')
     is_verified = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)

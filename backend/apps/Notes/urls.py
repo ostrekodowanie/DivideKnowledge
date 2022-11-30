@@ -8,4 +8,6 @@ urlpatterns = [
     path('api/notes/like/add', views.NoteLikeView.as_view()),
     path('api/notes/like/remove/<u>/<n>', views.RemoveNoteLikeView.as_view()),
     path('api/notes/user/<pk>', views.UserNotesView.as_view()),
+    path('api/notes/popular', views.RecentPopularNotesView.as_view()),
+    path('api/notes/recent', views.RecentNotesView.as_view()),
 ]

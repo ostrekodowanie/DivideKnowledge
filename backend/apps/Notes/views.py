@@ -9,6 +9,9 @@ from rest_framework.parsers import MultiPartParser, FormParser
 
 from django.db.models import Count, Exists, OuterRef, Q
 
+from django.utils import timezone
+from datetime import timedelta
+
 class NoteCreateView(generics.CreateAPIView):
     parser_classes = (MultiPartParser, FormParser)
     serializer_class = NotesSerializer
@@ -26,7 +29,7 @@ class NotesCategoriesView(generics.ListAPIView):
 
 class NotesListView(generics.ListAPIView):
     serializer_class = NotesSerializer
-    #permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     def get_queryset(self):
         u = self.request.GET.get('u')
         c = self.request.GET.get('c')
@@ -51,4 +54,18 @@ class RemoveNoteLikeView(generics.DestroyAPIView):
         unlike = NotesLikes.objects.filter(Q(user=user) & Q(note=note))
         unlike.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class RecentPopularNotesView(generics.ListAPIView):
+    queryset = (Notes.objects
+        .filter(is_verified=True)
+        .annotate(recentlikes=Count('pk', filter=Q(noteslikes__created_at__gte=timezone.now()-timedelta(10))))
+        .order_by('recentlikes')
+        .annotate(ids=Count('noteslikes__id'))
+        .order_by('-ids')[:10])
+    serializer_class = RecentNotesSerializer
+
+class RecentNotesView(generics.ListAPIView):
+    queryset = Notes.objects.filter(is_verified=True).order_by('-created_at')[:10]
+    serializer_class = RecentNotesSerializer
+
 
