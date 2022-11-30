@@ -33,7 +33,8 @@ export default function ProfileScreen() {
                 title: 'Dodane fiszki'
             }} />
             <ProfileStack.Screen name="FlashLists" component={FlashLists} options={{
-                title: 'FiszkoListy'
+                title: 'FiszkoListy',
+                headerShown: false
             }} />
         </ProfileStack.Navigator>
     )

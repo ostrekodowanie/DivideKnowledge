@@ -1,46 +1,42 @@
-import axios from "axios";
-import { Pressable, Text, View } from "react-native";
-import { useState, useEffect } from 'react'
-import { BASE_URL } from "../../constants/baseUrl";
-import { useAppSelector } from "../../hooks/useAppSelector";
 import { FlashCardProps } from "../flashcards/FlashCard";
-import Loader from "../Loader";
-import { useTailwind } from "tailwind-rn/dist";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import ListOfLists from "../flashlists/ListOfLists";
+import AddFlashList from "../flashlists/AddFlashList";
+import FlashListCards from "../flashlists/FlashListCards";
+
+export type FlashListCard = FlashCardProps & {
+    topic: string
+}
 
 export interface FlashListProps {
+    id?: number,
     name: string,
-    flashcards: FlashCardProps[]
+    flashcards: FlashListCard[] 
 }
+
+export type FlashListStackParams = {
+    ListOfLists: undefined,
+    AddFlashList: undefined,
+    FlashListCards: FlashListProps
+}
+
+const FlashListStack = createNativeStackNavigator<FlashListStackParams>()
 
 export default function FlashLists() {
-    const tw = useTailwind()
-    const [loading, setLoading] = useState(true)
-    const [flashLists, setFlashLists] = useState<FlashListProps[]>([])
-    const auth = useAppSelector(state => state.login)
-    const { id } = auth.user
-    const { access } = auth.tokens
-
-    useEffect(() => {
-        axios.get(`${BASE_URL}/api/flashlists/user/${id}`, { headers: { 'Authorization': 'Bearer ' + access }})
-            .then(res => res.data)
-            .then(data => setFlashLists(data))
-            .finally(() => setLoading(false))
-    }, [])
-
-    if(loading) return <Loader />
-    if(flashLists.length === 0) return <Pressable><Text style={{ fontFamily: 'Bold' }}>Dodaj FiszkoListę</Text></Pressable>
-
     return (
-        <View style={tw('p-4')}>
-            {flashLists.map(list => <FlashListRef {...list} key={list.name} />)}
-        </View>
+        <FlashListStack.Navigator initialRouteName="ListOfLists" screenOptions={{
+            headerTitleStyle: { fontFamily: 'Bold' }
+        }}>
+            <FlashListStack.Screen name="ListOfLists" component={ListOfLists} options={{
+                title: 'FiszkoListy'
+            }} />
+            <FlashListStack.Screen name="AddFlashList" component={AddFlashList} options={{
+                title: 'Dodaj fiszkolistę'
+            }} />
+            <FlashListStack.Screen name="FlashListCards" component={FlashListCards} options={({ route }) => {
+                return { title: route.params.name }
+            }}  />
+        </FlashListStack.Navigator>
     )
 }
 
-const FlashListRef = ({ name }: FlashListProps) => {
-    return (
-        <Pressable>
-            <Text style={{ fontFamily: 'Bold' }}>{name}</Text>
-        </Pressable>
-    )
-}

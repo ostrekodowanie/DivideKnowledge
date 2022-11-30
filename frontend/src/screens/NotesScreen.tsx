@@ -9,7 +9,7 @@ import Loader from '../components/Loader';
 import AddNote from '../components/notes/AddNote';
 import Note, { NoteProps } from '../components/notes/Note';
 import usePopularNotes from '../components/notes/PopularNotes';
-import PrimaryButton from '../components/PrimaryButton';
+import useRecentNotes from '../components/notes/RecentNotes';
 import { BASE_URL } from '../constants/baseUrl';
 import { useAppSelector } from '../hooks/useAppSelector';
 
@@ -49,7 +49,8 @@ const NoteList = ({ navigation }: { navigation: NoteRefNavigationProp}) => {
     const auth = useAppSelector(state => state.login)
     const { access } = auth.tokens
     const { id } = auth.user
-    const { isLoaded, PopularNotes } = usePopularNotes()
+    const { didRecentLoad, PopularNotes } = usePopularNotes()
+    const { RecentNotes } = useRecentNotes()
     const [loading, setLoading] = useState(true)
     const [notes, setNotes] = useState<NoteProps[]>([])
     const [filter, setFilter] = useState<Filter>({
@@ -69,14 +70,20 @@ const NoteList = ({ navigation }: { navigation: NoteRefNavigationProp}) => {
     }, [filter, location])
 
     return (
-        <View style={tw('p-6 flex-1 bg-white')}>
-            <PopularNotes />
-            <NoteFilter filter={filter} setFilter={setFilter} />
-            <ScrollView style={tw('pb-12')}>
+        <>
+            <ScrollView style={tw('pt-6 px-6 flex-1 bg-white')}>
+                <PopularNotes />
+                <RecentNotes />
+                <NoteFilter filter={filter} setFilter={setFilter} />
                 {!loading ? notes.map(note => <NoteRef {...note} key={note.id} />) : <Loader />}
             </ScrollView>
-            <PrimaryButton style={'absolute z-10 left-6 bottom-2 w-full'} text='Dodaj notatkę' onPress={() => navigation.navigate('AddNote')} />
-        </View>
+            <Pressable style={tw('absolute right-6 bottom-6')} onPress={() => navigation.navigate('AddNote')}>
+                <View style={tw('rounded-full w-16 h-16 bg-primary items-center justify-center z-10')}>
+                    <Text style={{fontFamily: 'Bold', ...tw('text-4xl text-white')}}>+</Text>
+                </View>
+                <View style={tw(`absolute left-0 right-0 h-[2.5rem] bg-darkPrimary -bottom-[0.4rem] rounded-b-full`)} />
+            </Pressable>
+        </>
     )
 }
 
@@ -101,7 +108,7 @@ const NoteFilter = ({ filter, setFilter }: { filter: Filter, setFilter: any }) =
     return (
         <View style={tw('mb-6')}>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={tw('flex-row')}>
-                <Pressable style={tw(`py-1 px-4 rounded-xl mr-2 ${filter.category === 'Wszystkie' ? 'bg-primary' : 'bg-white'}`)} onPress={() => setFilter((prev: Filter) => ({ ...prev, category: 'Wszystkie'}))}>
+                <Pressable style={tw(`py-1 px-4 rounded-xl ${filter.category === 'Wszystkie' ? 'bg-primary' : 'bg-white'}`)} onPress={() => setFilter((prev: Filter) => ({ ...prev, category: 'Wszystkie'}))}>
                     <Text style={{ fontFamily: 'Bold', ...tw(`text-lg ${filter.category === 'Wszystkie' ? 'text-white' : 'text-fontLight'}`) }}>Wszystkie</Text>
                 </Pressable>
                 {categories.map(category => <CategoryButton category={category} key={category.name} /> )}

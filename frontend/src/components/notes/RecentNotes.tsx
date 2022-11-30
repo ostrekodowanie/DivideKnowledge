@@ -8,31 +8,31 @@ import axios from "axios"
 import { BASE_URL } from "../../constants/baseUrl"
 import { NoteStackParams } from "../../screens/NotesScreen"
 
-export default function usePopularNotes() {
+export default function useRecentNotes() {
     const tw = useTailwind()
     const navigation = useNavigation<NavigationProp<NoteStackParams, 'NoteList'>>()
     const location = useNavigationState(state => state)
-    const [popularNotes, setPopularNotes] = useState<NoteProps[]>([])
+    const [recentNotes, setRecentNotes] = useState<NoteProps[]>([])
 
     useEffect(() => {
-        axios.get(`${BASE_URL}/api/notes/popular`)
+        axios.get(`${BASE_URL}/api/notes/recent`)
             .then(res => res.data)
-            .then(data => setPopularNotes(data))
+            .then(data => setRecentNotes(data))
     }, [location])
 
-    const PopularNotes = () => {
+    const RecentNotes = () => {
         return (
             <View style={tw('mb-6')}>
-                <Text style={{fontFamily: 'Bold', ...tw('mb-4 text-lg')}}>Popularne notatki</Text>
+                <Text style={{fontFamily: 'Bold', ...tw('mb-4 text-lg')}}>Ostatnio dodane notatki</Text>
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                    {popularNotes.map(note => <SmallNoteRef onPress={() => navigation.navigate('Note', {...note})} style='mr-6' {...note} key={note.id + note.title}/>)}
+                    {recentNotes.map(note => <SmallNoteRef onPress={() => navigation.navigate('Note', {...note})} style='mr-6' {...note} key={note.id}/>)}
                 </ScrollView>
             </View>
         )
     }
 
     return {
-        PopularNotes,
-        didRecentLoad: popularNotes.length > 0
+        RecentNotes,
+        isLoaded: recentNotes.length > 0
     }
 }
