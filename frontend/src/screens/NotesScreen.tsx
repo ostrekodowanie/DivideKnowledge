@@ -1,4 +1,4 @@
-import { NavigationProp, useNavigation, useRoute } from '@react-navigation/native';
+import { NavigationProp, useNavigation, useNavigationState } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
@@ -8,6 +8,8 @@ import { CategoryProps } from '../components/flashcards/CategoryList';
 import Loader from '../components/Loader';
 import AddNote from '../components/notes/AddNote';
 import Note, { NoteProps } from '../components/notes/Note';
+import usePopularNotes from '../components/notes/PopularNotes';
+import PrimaryButton from '../components/PrimaryButton';
 import { BASE_URL } from '../constants/baseUrl';
 import { useAppSelector } from '../hooks/useAppSelector';
 
@@ -25,9 +27,11 @@ export default function NotesScreen() {
             headerTitleStyle: { fontFamily: 'Bold' }
         }}>
             <NoteStack.Screen name='NoteList' component={NoteList} options={{ 
-                title: 'Popularne notatki'
+                title: 'Notatki'
             }} />
-            <NoteStack.Screen name='Note' component={Note} options={{ title: 'Notatka' }} />
+            <NoteStack.Screen name='Note' component={Note} options={({ route }) => {
+                return { title: route.params.title }
+            }} />
             <NoteStack.Screen name='AddNote' component={AddNote} options={{ title: 'Dodaj notatkę' }} />
         </NoteStack.Navigator>
     )
@@ -39,13 +43,13 @@ interface Filter {
     category: string
 }
 
-const NoteList = () => {
-    const navigation = useNavigation<NoteRefNavigationProp>()
-    const route = useRoute()
+const NoteList = ({ navigation }: { navigation: NoteRefNavigationProp}) => {
+    const location = useNavigationState(state => state)
     const tw = useTailwind()
     const auth = useAppSelector(state => state.login)
     const { access } = auth.tokens
     const { id } = auth.user
+    const { isLoaded, PopularNotes } = usePopularNotes()
     const [loading, setLoading] = useState(true)
     const [notes, setNotes] = useState<NoteProps[]>([])
     const [filter, setFilter] = useState<Filter>({
@@ -62,15 +66,16 @@ const NoteList = () => {
         }).then(res => res.data)
         .then(data => setNotes(data))
         .finally(() => setLoading(false))
-    }, [filter, route])
+    }, [filter, location])
 
     return (
         <View style={tw('p-6 flex-1 bg-white')}>
-            <Pressable onPress={() => navigation.navigate('AddNote')}><Text style={{ fontFamily: 'Bold', ...tw('text-lg')}}>Dodaj notatkę</Text></Pressable>
+            <PopularNotes />
             <NoteFilter filter={filter} setFilter={setFilter} />
-            <ScrollView>
+            <ScrollView style={tw('pb-12')}>
                 {!loading ? notes.map(note => <NoteRef {...note} key={note.id} />) : <Loader />}
             </ScrollView>
+            <PrimaryButton style={'absolute z-10 left-6 bottom-2 w-full'} text='Dodaj notatkę' onPress={() => navigation.navigate('AddNote')} />
         </View>
     )
 }
@@ -94,7 +99,7 @@ const NoteFilter = ({ filter, setFilter }: { filter: Filter, setFilter: any }) =
     )
 
     return (
-        <View style={tw('my-6')}>
+        <View style={tw('mb-6')}>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={tw('flex-row')}>
                 <Pressable style={tw(`py-1 px-4 rounded-xl mr-2 ${filter.category === 'Wszystkie' ? 'bg-primary' : 'bg-white'}`)} onPress={() => setFilter((prev: Filter) => ({ ...prev, category: 'Wszystkie'}))}>
                     <Text style={{ fontFamily: 'Bold', ...tw(`text-lg ${filter.category === 'Wszystkie' ? 'text-white' : 'text-fontLight'}`) }}>Wszystkie</Text>
@@ -119,7 +124,7 @@ const NoteRef = (props: NoteProps) => {
                     <Text style={{fontFamily: 'Bold', ...tw('text-xl')}}>{title}</Text>
                     <Text style={{fontFamily:'Medium', ...tw('text-fontLight')}}>{desc}</Text>
                 </View>
-                <Text style={{fontFamily:'Bold'}}>❤{likes}</Text>
+                <View style={tw('flex-row items-center')}><Text style={tw('mr-1')}>❤</Text><Text style={{fontFamily: 'Bold', ...tw('text-lg')}}>{likes}</Text></View>
             </View>
         </TouchableOpacity>
     )
