@@ -6,6 +6,13 @@
   position: relative
 }
 
+.inset-0 {
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px
+}
+
 .left-0 {
   left: 0px
 }
@@ -16,6 +23,34 @@
 
 .-bottom-\[0\.4rem\] {
   bottom: -0.4rem
+}
+
+.left-6 {
+  left: 1.5rem
+}
+
+.bottom-2 {
+  bottom: 0.5rem
+}
+
+.bottom-6 {
+  bottom: 1.5rem
+}
+
+.right-6 {
+  right: 1.5rem
+}
+
+.-bottom-\[1rem\] {
+  bottom: -1rem
+}
+
+.-bottom-\[0\.6rem\] {
+  bottom: -0.6rem
+}
+
+.-bottom-\[0\.5rem\] {
+  bottom: -0.5rem
 }
 
 .z-10 {
@@ -57,6 +92,11 @@
   margin-bottom: 2rem
 }
 
+.my-auto {
+  margin-top: auto;
+  margin-bottom: auto
+}
+
 .mb-4 {
   margin-bottom: 1rem
 }
@@ -77,12 +117,12 @@
   margin-right: 0.25rem
 }
 
-.mr-2 {
-  margin-right: 0.5rem
-}
-
 .mb-6 {
   margin-bottom: 1.5rem
+}
+
+.mr-2 {
+  margin-right: 0.5rem
 }
 
 .mt-4 {
@@ -121,6 +161,18 @@
   margin-top: 1.5rem
 }
 
+.mr-4 {
+  margin-right: 1rem
+}
+
+.mr-6 {
+  margin-right: 1.5rem
+}
+
+.ml-auto {
+  margin-left: auto
+}
+
 .h-20 {
   height: 5rem
 }
@@ -149,6 +201,38 @@
   height: 10rem
 }
 
+.h-12 {
+  height: 3rem
+}
+
+.h-32 {
+  height: 8rem
+}
+
+.h-28 {
+  height: 7rem
+}
+
+.h-8 {
+  height: 2rem
+}
+
+.h-\[4rem\] {
+  height: 4rem
+}
+
+.h-\[3rem\] {
+  height: 3rem
+}
+
+.h-\[2\.5rem\] {
+  height: 2.5rem
+}
+
+.max-h-\[4rem\] {
+  max-height: 4rem
+}
+
 .w-full {
   width: 100%
 }
@@ -165,6 +249,30 @@
   width: 62%
 }
 
+.w-12 {
+  width: 3rem
+}
+
+.w-24 {
+  width: 6rem
+}
+
+.w-32 {
+  width: 8rem
+}
+
+.w-28 {
+  width: 7rem
+}
+
+.w-8 {
+  width: 2rem
+}
+
+.w-16 {
+  width: 4rem
+}
+
 .max-w-\[90\%\] {
   max-width: 90%
 }
@@ -175,6 +283,10 @@
 
 .flex-row {
   flex-direction: row
+}
+
+.items-start {
+  align-items: flex-start
 }
 
 .items-center {
@@ -209,9 +321,22 @@
   border-radius: 0.75rem
 }
 
+.rounded {
+  border-radius: 0.25rem
+}
+
+.rounded-full {
+  border-radius: 9999px
+}
+
 .rounded-b-2xl {
   border-bottom-right-radius: 1rem;
   border-bottom-left-radius: 1rem
+}
+
+.rounded-b-full {
+  border-bottom-right-radius: 9999px;
+  border-bottom-left-radius: 9999px
 }
 
 .border-\[3px\] {
@@ -354,6 +479,14 @@
   padding-right: 2.5rem
 }
 
+.pb-12 {
+  padding-bottom: 3rem
+}
+
+.pt-6 {
+  padding-top: 1.5rem
+}
+
 .text-center {
   text-align: center
 }
@@ -397,6 +530,11 @@
 .text-4xl {
   font-size: 2.25rem;
   line-height: 2.5rem
+}
+
+.text-5xl {
+  font-size: 3rem;
+  line-height: 1
 }
 
 .font-bold {

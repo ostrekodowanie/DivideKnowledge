@@ -24,9 +24,13 @@ export default function FlashCardsScreen() {
         }}>
             <CategoryStack.Screen name='CategoryList' component={CategoryList} options={{ title: 'Wybierz kategorię' }} />
             <CategoryStack.Screen name='AddCard' component={AddCard} options={{ title: 'Dodaj fiszkę', headerShown: false }} />
-            <CategoryStack.Screen name='TopicList' component={TopicList} options={{ title: 'Wybierz temat'}} />
-            <CategoryStack.Screen name='FlashCardsGenerator' component={FlashCardsGenerator} options={{ 
-                title: 'Fiszki'
+            <CategoryStack.Screen name='TopicList' component={TopicList} options={({ route }) => {
+                return { 
+                    title: 'Tematy w kategorii ' +  route.params.category.name
+                }
+            }} />
+            <CategoryStack.Screen name='FlashCardsGenerator' component={FlashCardsGenerator} options={({route}) => {
+                return { title: 'Fiszki ' + route.params.topic.name }
             }} />
         </CategoryStack.Navigator>
     )

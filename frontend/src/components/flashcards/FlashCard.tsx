@@ -11,6 +11,7 @@ export interface AnswerType {
 }
 
 export interface FlashCardProps {
+    id: number,
     question: string,
     type: 'radio' | 'input' | null,
     answers: AnswerType[]

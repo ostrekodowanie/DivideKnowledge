@@ -35,14 +35,19 @@ export default function Note({ route }: { route: NoteRouteProp}) {
         if(resp.status === 201) return setLiked(true)
     }
 
+    const handleRemove = async () => {
+        const resp = await axios.delete(`${BASE_URL}/api/notes/like/remove/${id}/${note}`)
+        if(resp.status === 204) return setLiked(false)
+    }
+
     return (
-        <View style={tw('p-6 flex-1')}>
+        <View style={tw('p-6 flex-1 bg-white')}>
             <Image style={{...styles.imageContain, ...tw('w-full h-36')}} source={{
                 uri: image
             }} />
             <Text style={{fontFamily: 'Bold', ...tw('text-xl')}}>{title}</Text>
             <Text style={{fontFamily:'Medium', ...tw('text-fontLight')}}>{desc}</Text>
-            {!liked ? <PrimaryButton style="mt-auto w-full" text="Polub" onPress={handleAdd} /> : <Text style={{fontFamily: 'Bold', ...tw('text-lg mt-auto mx-auto')}}>Lubisz to</Text>}
+            {!liked ? <PrimaryButton style="mt-auto w-full" text="Polub" onPress={handleAdd} /> : <PrimaryButton style="mt-auto w-full" onPress={handleRemove} text='Polubiono' />}
         </View>
     )
 }

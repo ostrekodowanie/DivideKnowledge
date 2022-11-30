@@ -61,9 +61,6 @@ export default function AddNote() {
 
     const handleSubmit = async () => {
         setStatus('loading')
-        let { title, desc } = newNote
-        if(title.length > 16) return setStatus('Zbyt długi tytuł notatki!')
-        if(desc.length > 48) return setStatus('Zbyt długi opis!')
         const form = new FormData()
 
         form.append('user', String(id))
@@ -90,13 +87,15 @@ export default function AddNote() {
     if(status === 'loading') return <Loader />
     
     return (
-        <ScrollView style={tw('p-6 relative')}>
+        <ScrollView style={tw('p-6 relative bg-white')}>
             <TouchableOpacity onPress={pickImage}><Text style={{fontFamily: 'SemiBold', ...tw('text-blue-400 text-lg mb-4 mx-auto')}}>Wybierz zdjęcie</Text></TouchableOpacity>
             {newNote.image.uri && <Image style={{...styles.imageContain, ...tw('w-full h-[10rem]')}} source={{
                 uri: newNote.image.uri
             }} />}
             <PrimaryInput field="title" value={newNote.title} setState={setNewNote} label='Tytuł' />
+            {newNote.title.length > 16 && <Text style={{fontFamily: 'SemiBold', ...tw('text-red-400 mb-4')}}>Tytuł nie może przekraczać 16 znaków!</Text>}
             <PrimaryInput field="desc" value={newNote.desc} setState={setNewNote} label='Opis' />
+            <Text style={{fontFamily: 'SemiBold', ...tw(`${newNote.desc.length < 50 ? 'text-fontLight' : 'text-red-400'} mb-4`)}}>{newNote.desc.length} / 50</Text>
             {categories.length > 0 ? <SelectDropdown 
                 data={categories.map(item => item)}
                 buttonStyle={tw(`w-full px-6 items-center mb-6 border-stroke border-[2px] rounded-2xl bg-white`)}
@@ -107,7 +106,7 @@ export default function AddNote() {
                 rowTextForSelection={item => item.name}
             /> : <Loader />}
             {status && typeof status === 'string' && <Text style={{ fontFamily: 'SemiBold', ...tw('text-red-400')}}>{status}</Text>}
-            <PrimaryButton onPress={handleSubmit} style={'my-8'} text='Zatwierdź' />
+            <PrimaryButton onPress={handleSubmit} active={newNote.title !== '' && newNote.image.uri !== '' && newNote.category.name !== '' && newNote.title.length < 16 && newNote.title.length < 50} style={'my-8'} text='Zatwierdź' />
             <Modal style={tw('mx-auto')} visible={status === true} animationType='fade'>
                 <View style={tw('px-6 py-4 flex-1 bg-white rounded-xl items-center justify-center ')}>
                     <Image style={{...styles.imageContain, height: 160}} source={require('../../../assets/card_created.png')} />

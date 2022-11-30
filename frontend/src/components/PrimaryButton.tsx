@@ -6,7 +6,7 @@ type Button = {
     onPress: () => any,
     text: string,
     active?: boolean,
-    style?: string
+    style?: string | Style
 }
 
 export default function PrimaryButton({ onPress, text, style, active = true }: Button) {
@@ -14,7 +14,7 @@ export default function PrimaryButton({ onPress, text, style, active = true }: B
     const tw = useTailwind()
 
     return (
-        <View style={tw(`relative mb-4 ${style ? style : ''}`)}>
+        <View style={{...tw(`relative mb-4 ${style ? style : ''}`), ...(style && typeof style !== 'string' ? { ...style } : {})}}>
             <Pressable onPress={active ? onPress : () => {}} onPressIn={() => setIsPressed(true)} onPressOut={() => setIsPressed(false)} style={{ transform: isPressed ? [{ translateY: 8 }] : [], ...tw(`${active ? 'bg-primary' : 'bg-[#E0E4E1]'} relative z-10 rounded-2xl w-full mx-auto py-4 px-12`)}}>
                 <Text style={{ fontFamily: 'ExtraBold', ...tw(`text-[1.1rem] mx-auto ${active ? 'text-white' : 'text-font'}`)}}>{text}</Text>
             </Pressable>

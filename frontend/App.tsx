@@ -23,7 +23,6 @@ import { useFonts,
         Dosis_700Bold as Bold,
         Dosis_800ExtraBold as ExtraBold
 } from '@expo-google-fonts/dosis';
-import { View } from 'react-native';
 
 export type RootTabParams = {
   Home: undefined,
