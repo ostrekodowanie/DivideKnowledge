@@ -34,7 +34,7 @@ class AddFlashcardToFlashlistView(generics.CreateAPIView):
 
 class RemoveFlashcardFromFlashlistView(APIView):
     def delete(self, request, *args, **kwargs):
-        ids = request.query_params.get('f').split(',')
+        ids = request.query_params.get('ids').split(',')
         queryset = FlashlistsElements.objects.filter(id__in=ids)
         queryset.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
