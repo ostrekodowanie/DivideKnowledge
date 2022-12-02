@@ -25,7 +25,7 @@ export default function useRecentNotes() {
             <View style={tw('mb-6')}>
                 <Text style={{fontFamily: 'Bold', ...tw('mb-4 text-lg')}}>Ostatnio dodane notatki</Text>
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                    {recentNotes.map(note => <SmallNoteRef onPress={() => navigation.navigate('Note', {...note})} style='mr-6' {...note} key={note.id}/>)}
+                    {recentNotes.map(note => <SmallNoteRef onPress={() => navigation.navigate('Note', {...note})} style='mr-6' {...note} key={note.id + note.title}/>)}
                 </ScrollView>
             </View>
         )
