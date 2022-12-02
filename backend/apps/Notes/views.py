@@ -16,6 +16,13 @@ class NoteCreateView(generics.CreateAPIView):
     parser_classes = (MultiPartParser, FormParser)
     serializer_class = NotesSerializer
 
+class NoteView(generics.RetrieveAPIView):
+    serializer_class = NoteSerializer
+    permission_classes = [IsAuthenticated]
+    def get_queryset(self):
+        u = self.request.GET.get('u')
+        return Notes.objects.all().annotate(is_liked=Exists(NotesLikes.objects.filter(user=u, note_id=OuterRef('pk'))))
+
 class UserNotesView(generics.ListAPIView):
     serializer_class = NotesSerializer
     permission_classes = [IsAuthenticated]
@@ -40,7 +47,11 @@ class NotesListView(generics.ListAPIView):
                 .annotate(ids=Count('noteslikes__id'))
                 .order_by('-ids'))
             return notes
-        return Notes.objects.filter(is_verified=True).annotate(is_liked=Exists(NotesLikes.objects.filter(user=u, note_id=OuterRef('pk')))).annotate(ids=Count('noteslikes__id')).order_by('-ids')
+        return (Notes.objects
+            .filter(is_verified=True)
+            .annotate(is_liked=Exists(NotesLikes.objects.filter(user=u, note_id=OuterRef('pk'))))
+            .annotate(ids=Count('noteslikes__id'))
+            .order_by('-ids'))
 
 class NoteLikeView(generics.CreateAPIView):
     queryset = NotesLikes.objects.all()

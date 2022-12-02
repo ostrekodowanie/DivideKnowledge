@@ -1,4 +1,4 @@
-import { Provider } from 'react-redux'
+import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import loginReducer from './reducers/login'
 import App from './App';
