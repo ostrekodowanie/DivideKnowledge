@@ -5,7 +5,7 @@ urlpatterns = [
     path('api/notes/create', views.NoteCreateView.as_view()),
     path('api/notes/categories', views.NotesCategoriesView.as_view()),
     path('api/notes', views.NotesListView.as_view()),
-    path('api/notes/<pk>', views.NoteView.as_view()),
+    path('api/notes/retrieve/<pk>', views.NoteView.as_view()),
     path('api/notes/like/add', views.NoteLikeView.as_view()),
     path('api/notes/like/remove/<u>/<n>', views.RemoveNoteLikeView.as_view()),
     path('api/notes/user/<pk>', views.UserNotesView.as_view()),
