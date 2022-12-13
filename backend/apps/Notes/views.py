@@ -36,7 +36,6 @@ class NotesCategoriesView(generics.ListAPIView):
 
 class NotesListView(generics.ListAPIView):
     serializer_class = NotesSerializer
-    permission_classes = [IsAuthenticated]
     def get_queryset(self):
         u = self.request.GET.get('u')
         c = self.request.GET.get('c')
