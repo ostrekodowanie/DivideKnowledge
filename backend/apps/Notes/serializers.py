@@ -25,6 +25,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class NotesSerializer(serializers.ModelSerializer):
     is_liked = serializers.BooleanField(read_only=True)
     likes = serializers.SerializerMethodField()
+    category = serializers.CharField(source='category.name')
 
     def get_likes(self, ob):
         return ob.noteslikes.count()
