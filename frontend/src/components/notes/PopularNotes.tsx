@@ -7,13 +7,11 @@ import { NavigationProp, useNavigation, useNavigationState } from "@react-naviga
 import axios from "axios"
 import { BASE_URL } from "../../constants/baseUrl"
 import { NoteStackParams } from "../../screens/NotesScreen"
-import { useAppSelector } from "../../hooks/useAppSelector"
 
 export default function usePopularNotes() {
     const tw = useTailwind()
     const navigation = useNavigation<NavigationProp<NoteStackParams, 'NoteList'>>()
     const location = useNavigationState(state => state)
-    const { access } = useAppSelector(state => state.login.tokens) 
     const [popularNotes, setPopularNotes] = useState<NoteProps[]>([])
 
     useEffect(() => {

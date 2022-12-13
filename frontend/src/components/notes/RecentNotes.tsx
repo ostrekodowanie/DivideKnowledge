@@ -7,19 +7,15 @@ import { NavigationProp, useNavigation, useNavigationState } from "@react-naviga
 import axios from "axios"
 import { BASE_URL } from "../../constants/baseUrl"
 import { NoteStackParams } from "../../screens/NotesScreen"
-import { useAppSelector } from "../../hooks/useAppSelector"
 
 export default function useRecentNotes() {
     const tw = useTailwind()
-    const auth = useAppSelector(state => state.login)
-    const { access } = auth.tokens
-    const { id } = auth.user
     const navigation = useNavigation<NavigationProp<NoteStackParams, 'NoteList'>>()
     const location = useNavigationState(state => state)
     const [recentNotes, setRecentNotes] = useState<NoteProps[]>([])
 
     useEffect(() => {
-        axios.get(`${BASE_URL}/api/notes/recent?u=${id}`, { headers: { 'Authorization': 'Bearer ' + access}})
+        axios.get(`${BASE_URL}/api/notes/recent`)
             .then(res => res.data)
             .then(data => setRecentNotes(data))
     }, [location])
