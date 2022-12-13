@@ -51,7 +51,7 @@ export default function ListOfLists({ navigation }: { navigation: ListOfFlashCar
 const FlashListRef = (props: FlashListProps & { setRemoved: any }) => {
     const tw = useTailwind()
     const navigation = useNavigation<ListOfFlashCardListsNavigation>()
-    const { setRemoved } = props
+    const { setRemoved, ...rest } = props
 
     const handleRemove = async () => {
         const resp = await axios.delete(`${BASE_URL}/api/flashlists/delete/${props.id}`)
@@ -60,7 +60,7 @@ const FlashListRef = (props: FlashListProps & { setRemoved: any }) => {
 
     return (
         <View style={tw('mb-4 flex-row justify-between items-center')}>
-            <TouchableOpacity onPress={() => navigation.navigate('FlashListCards', {...props})}><Text style={{ fontFamily: 'Bold', ...tw('text-lg') }}>{props.name}</Text></TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('FlashList', rest)}><Text style={{ fontFamily: 'Bold', ...tw('text-lg') }}>{props.name}</Text></TouchableOpacity>
             <TouchableOpacity onPress={handleRemove} style={tw('my-auto ml-auto')}><Text style={{fontFamily: 'Bold', ...tw('text-green-400 text-xl')}}>❌</Text></TouchableOpacity>
         </View>
     )

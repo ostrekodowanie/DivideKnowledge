@@ -1,14 +1,13 @@
 import { RouteProp } from "@react-navigation/native";
 import axios from "axios";
-import { Image, Text, View } from "react-native";
+import { Image, Pressable, Text, View } from "react-native";
 import { useTailwind } from "tailwind-rn/dist";
 import { BASE_URL } from "../../constants/baseUrl";
-import styles from "../../constants/styles";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { NoteStackParams } from "../../screens/NotesScreen";
-import PrimaryButton from "../PrimaryButton";
 import { useState, useEffect } from 'react'
 import Loader from "../Loader";
+import LikeIcon from '../../../assets/icons/note_like.svg'
 
 export interface NoteProps {
     id: number,
@@ -24,7 +23,7 @@ type NoteRouteProp = RouteProp<NoteStackParams, 'Note'>
 
 export default function Note({ route }: { route: NoteRouteProp}) {
     const tw = useTailwind()
-    const { title, desc, image, is_liked, likes } = route.params
+    const { title, desc, image, is_liked, likes, category } = route.params
     const { id } = useAppSelector(state => state.login.user)
     const note = route.params.id
     const [loading, setLoading] = useState(true)
@@ -35,7 +34,6 @@ export default function Note({ route }: { route: NoteRouteProp}) {
     })
  
     const handleAdd = async () => {
-        console.log(note, title)
         const resp = await axios.post(`${BASE_URL}/api/notes/like/add`, JSON.stringify({ user: id, note }), {
             headers: { 'Content-Type': 'application/json' }
         })
@@ -44,7 +42,7 @@ export default function Note({ route }: { route: NoteRouteProp}) {
 
     const handleRemove = async () => {
         const resp = await axios.delete(`${BASE_URL}/api/notes/like/remove/${id}/${note}`)
-        if(resp.status === 204) return setDetails(prev => ({ ...prev, is_liked: true}))
+        if(resp.status === 204) return setDetails(prev => ({ ...prev, is_liked: false}))
     }
 
     useEffect(() => {
@@ -57,13 +55,22 @@ export default function Note({ route }: { route: NoteRouteProp}) {
     if(loading) return <View style={tw('flex-1 bg-white justify-center items-center')}><Loader /></View>
 
     return (
-        <View style={tw('p-6 flex-1 bg-white')}>
-            <Image style={{...styles.imageContain, ...tw('w-full h-36')}} source={{
+        <View style={tw('flex-1 bg-white')}>
+            <Image style={tw('w-full h-36')} source={{
                 uri: image
             }} />
-            <Text style={{fontFamily: 'Bold', ...tw('text-xl')}}>{title}</Text>
-            <Text style={{fontFamily:'Medium', ...tw('text-fontLight')}}>{desc}</Text>
-            {!details.is_liked ? <PrimaryButton style="mt-auto w-full" text="Polub" onPress={handleAdd} /> : <PrimaryButton style="mt-auto w-full" onPress={handleRemove} text='Polubiono' />}
+            <View style={tw('p-6')}>
+                <View style={tw('justify-between items-center flex-row')}>
+                    <View style={tw('items-start flex-col flex-1')}>
+                        <Text style={{fontFamily: 'Bold', ...tw('text-2xl')}}>{title}</Text>
+                        <Text style={{ fontFamily: 'SemiBold', ...tw('text-xl text-primary')}}>{category}</Text>
+                    </View>
+                    <Pressable style={tw('h-12 w-12 rounded-xl border-stroke border-[2px] items-center justify-center')} onPress={!details.is_liked ? handleAdd : handleRemove}>
+                        <LikeIcon stroke={details.is_liked ? '#FF0000' : '#212C24'} strokeWidth={2} fill={details.is_liked ? '#FF0000' : 'none'} />
+                    </Pressable>
+                </View>
+                <Text style={{fontFamily:'Medium', ...tw('text-desc')}}>{desc}</Text>
+            </View>
         </View>
     )
 }

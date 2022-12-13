@@ -95,7 +95,7 @@ export default function App() {
   }, [refresh])
 
   if(loading || !isFontLoaded) return <Loader />
-  if(!logged) return <EntryScreen />
+  // if(!logged) return <EntryScreen />
 
   return (
     <NavigationContainer>

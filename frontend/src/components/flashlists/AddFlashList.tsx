@@ -1,4 +1,4 @@
-import { Pressable, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { FlashListProps } from "../profile/FlashLists";
 import { useState } from 'react'
 import { useTailwind } from "tailwind-rn/dist";
@@ -15,6 +15,7 @@ export default function AddFlashList() {
     const [status, setStatus] = useState<boolean | undefined>(undefined)
     const [loading, setLoading] = useState(false)
     const [newFlashList, setNewFlashList] = useState<FlashListProps>({
+        id: -1,
         name: '',
         flashcards: []
     })

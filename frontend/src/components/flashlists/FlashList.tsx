@@ -4,10 +4,12 @@ import { useState, useEffect } from 'react'
 import { Text, TouchableOpacity, View } from "react-native";
 import { useTailwind } from "tailwind-rn/dist";
 import { BASE_URL } from "../../constants/baseUrl";
+
 import Loader from "../Loader";
 import { FlashListCard, FlashListStackParams } from "../profile/FlashLists";
+import CardChooser from "./CardChooser";
 
-export default function FlashListCards({ route }: { route: RouteProp<FlashListStackParams, 'FlashListCards'> }) {
+export default function FlashList({ route }: { route: RouteProp<FlashListStackParams, 'FlashList'> }) {
     const tw = useTailwind()
     const { flashcards } = route.params
     const [loading, setLoading] = useState(false)
@@ -21,10 +23,10 @@ export default function FlashListCards({ route }: { route: RouteProp<FlashListSt
             .catch(() => setStatus(false))
             .finally(() => setLoading(false))
     }
-
+    
     return (
         <View style={tw('flex-1 bg-white p-6')}>
-            <TouchableOpacity><Text style={{fontFamily: 'Bold', ...tw('text-lg text-blue-400')}}>Dodaj fiszkę do listy</Text></TouchableOpacity>
+            <CardChooser />
             <View style={tw('justify-between flex-row my-6')}>
                 <Text style={{fontFamily: 'ExtraBold', ...tw('text-xl')}}>Fiszki w tej FiszkoLiście</Text>
                 <TouchableOpacity onPress={removeCards}><Text style={{ fontFamily: 'SemiBold', ...tw('text-lg text-red-400')}}>Usuń zaznaczone</Text></TouchableOpacity>
